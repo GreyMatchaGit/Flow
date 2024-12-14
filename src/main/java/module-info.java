@@ -10,6 +10,8 @@ module com.greymatcha.todolist {
     requires eu.hansolo.tilesfx;
 
     opens com.greymatcha.todolist to javafx.fxml;
+    opens com.greymatcha.todolist.fxmlcontroller;
+
     exports com.greymatcha.todolist;
     exports com.greymatcha.todolist.fxmlcontroller;
 }
