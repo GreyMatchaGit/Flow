@@ -11,4 +11,5 @@ module com.greymatcha.todolist {
 
     opens com.greymatcha.todolist to javafx.fxml;
     exports com.greymatcha.todolist;
+    exports com.greymatcha.todolist.fxmlcontroller;
 }
