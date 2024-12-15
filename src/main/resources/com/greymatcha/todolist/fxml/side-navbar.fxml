@@ -19,16 +19,18 @@
                <children>
                   <AnchorPane>
                      <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <Rectangle fx:id="userBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8f4f4" height="40.0" stroke="#f8f4f4" strokeType="INSIDE" width="100.0" />
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../media/user_default.png" />
                            </image>
                         </ImageView>
-                        <Text layoutX="40.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
+                        <Text fx:id="username" layoutX="40.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
                            <font>
                               <Font name="0xProto Nerd Font Mono" size="18.0" />
                            </font>
                         </Text>
+                        <Button fx:id="userButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: transparent;" />
                      </children>
                   </AnchorPane>
                </children>
@@ -38,7 +40,7 @@
       <AnchorPane minHeight="42.0">
          <children>
             <Rectangle fx:id="inboxBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8f4f4" height="36.0" layoutX="10.0" layoutY="3.0" stroke="#f8f4f4" strokeType="OUTSIDE" width="220.0" />
-            <ImageView fitHeight="30.0" fitWidth="200.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../media/inbox.png" />
                </image>
@@ -57,7 +59,7 @@
       <AnchorPane minHeight="42.0">
          <children>
             <Rectangle fx:id="todayBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8f4f4" height="36.0" layoutX="10.0" layoutY="3.0" stroke="#f8f4f4" strokeType="OUTSIDE" width="220.0" />
-            <ImageView fitHeight="30.0" fitWidth="200.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="30.0" fitWidth="25.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../media/inbox.png" />
                </image>
