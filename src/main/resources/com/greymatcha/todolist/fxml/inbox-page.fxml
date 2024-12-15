@@ -2,10 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -15,44 +17,71 @@
        <fx:include source="side-navbar.fxml" BorderPane.alignment="TOP_LEFT" />
    </left>
    <center>
-      <BorderPane fx:id="contentPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
-         <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets left="150.0" right="150.0" top="24.0" />
-               </BorderPane.margin>
-               <children>
-                  <AnchorPane prefHeight="60.0">
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane fx:id="contentPane" prefHeight="600.0" prefWidth="784.0">
+               <center>
+                  <VBox BorderPane.alignment="CENTER">
                      <children>
-                        <Text layoutX="14.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inbox">
-                           <font>
-                              <Font name="System Bold" size="30.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane>
-                     <children>
-                        <StackPane layoutX="14.0" prefHeight="40.0" prefWidth="200.0">
+                        <AnchorPane prefHeight="60.0">
                            <children>
-                              <AnchorPane fx:id="addTaskParentPane">
-                                 <children>
-                                    <Rectangle fx:id="addTaskBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8baba" height="40.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                                    <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+ Add New Task">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Text>
-                                    <Button fx:id="addTaskButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: transparent;" />
-                                 </children>
-                              </AnchorPane>
+                              <Text layoutX="14.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inbox">
+                                 <font>
+                                    <Font name="System Bold" size="30.0" />
+                                 </font>
+                              </Text>
                            </children>
-                        </StackPane>
+                        </AnchorPane>
+                        <AnchorPane>
+                           <children>
+                              <StackPane layoutX="14.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <AnchorPane fx:id="addTaskParentPane">
+                                       <children>
+                                          <Rectangle fx:id="addTaskBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8baba" height="40.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
+                                          <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+ Add New Task">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Text>
+                                          <Button fx:id="addTaskButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: transparent;" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets left="120.0" right="120.0" top="30.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </center>
+            </BorderPane>
+            <StackPane layoutX="150.0" layoutY="150.0" prefHeight="280.0" prefWidth="500.0">
+               <children>
+                  <AnchorPane fx:id="taskPane">
+                     <children>
+                        <Rectangle arcHeight="15.0" arcWidth="15.0" fill="WHITE" height="280.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
+                        <TextField fx:id="taskNameField" layoutX="41.0" layoutY="47.0" prefWidth="410.0" promptText="Task Name" style="-fx-background-color: transparent;">
+                           <font>
+                              <Font size="16.0" />
+                           </font></TextField>
+                        <TextField fx:id="taskDescriptionField" layoutX="41.0" layoutY="78.0" prefWidth="410.0" promptText="Task Description" style="-fx-background-color: transparent;">
+                           <font>
+                              <Font size="16.0" />
+                           </font></TextField>
+                        <AnchorPane layoutX="16.0" layoutY="16.0">
+                           <children>
+                              <Circle fx:id="taskPaneCloseButton" fill="RED" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                           </children>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </children>
-            </VBox>
-         </center>
-      </BorderPane>
+            </StackPane>
+         </children>
+      </AnchorPane>
    </center>
 </BorderPane>
