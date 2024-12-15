@@ -15,7 +15,7 @@
    <children>
       <AnchorPane minHeight="60.0">
          <children>
-            <StackPane layoutX="13.0" layoutY="13.0">
+            <StackPane layoutX="10.0" layoutY="13.0">
                <children>
                   <AnchorPane>
                      <children>

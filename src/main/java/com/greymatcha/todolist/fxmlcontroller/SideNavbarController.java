@@ -3,6 +3,7 @@ package com.greymatcha.todolist.fxmlcontroller;
 import com.greymatcha.todolist.utils.ColorPalette;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -28,7 +29,12 @@ public class SideNavbarController implements Initializable {
 
     public void buttonHoverEffect(Button button, Rectangle background) {
 
+        button.setCursor(Cursor.HAND);
         button.setOnMouseEntered(_ -> background.setFill(Color.web(ColorPalette.light)));
         button.setOnMouseExited(_ -> background.setFill(Color.web(ColorPalette.medium)));
+
+        if (button == userButton) {
+            return;
+        }
     }
 }
