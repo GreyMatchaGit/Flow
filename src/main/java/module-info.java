@@ -8,6 +8,7 @@ module com.greymatcha.todolist {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires eu.hansolo.tilesfx;
+    requires java.desktop;
 
     opens com.greymatcha.todolist to javafx.fxml;
     opens com.greymatcha.todolist.fxmlcontroller;
