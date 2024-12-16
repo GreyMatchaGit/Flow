@@ -21,7 +21,7 @@
          <children>
             <BorderPane fx:id="contentPane" prefHeight="600.0" prefWidth="784.0">
                <center>
-                  <VBox BorderPane.alignment="CENTER">
+                  <VBox fx:id="taskBoxContainer" spacing="6.0" BorderPane.alignment="CENTER">
                      <children>
                         <AnchorPane prefHeight="60.0">
                            <children>
@@ -30,28 +30,27 @@
                                     <Font name="System Bold" size="30.0" />
                                  </font>
                               </Text>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane>
-                           <children>
-                              <StackPane layoutX="14.0" prefHeight="40.0" prefWidth="200.0">
+                              <AnchorPane layoutX="110.0" layoutY="7.0">
                                  <children>
-                                    <AnchorPane fx:id="addTaskParentPane">
+                                    <StackPane prefHeight="40.0" prefWidth="100.0">
                                        <children>
-                                          <Rectangle fx:id="addTaskBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8baba" height="40.0" stroke="WHITE" strokeType="INSIDE" width="200.0" />
-                                          <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+ Add New Task">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Text>
-                                          <Button fx:id="addTaskButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: transparent;" />
+                                          <AnchorPane fx:id="addTaskParentPane">
+                                             <children>
+                                                <Rectangle fx:id="addTaskBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8baba" height="40.0" stroke="WHITE" strokeType="INSIDE" width="100.0" />
+                                                <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Task">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Text>
+                                                <Button fx:id="addTaskButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: transparent;" />
+                                             </children>
+                                          </AnchorPane>
                                        </children>
-                                    </AnchorPane>
+                                    </StackPane>
                                  </children>
-                              </StackPane>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                      </children>
                      <BorderPane.margin>
                         <Insets left="120.0" right="120.0" top="30.0" />
@@ -59,7 +58,7 @@
                   </VBox>
                </center>
             </BorderPane>
-            <StackPane layoutX="150.0" layoutY="150.0" prefHeight="280.0" prefWidth="500.0">
+            <StackPane fx:id="taskStackPane" layoutX="150.0" layoutY="150.0" prefHeight="280.0" prefWidth="500.0" visible="false">
                <children>
                   <AnchorPane fx:id="taskPane">
                      <children>
@@ -77,6 +76,15 @@
                               <Circle fx:id="taskPaneCloseButton" fill="RED" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                            </children>
                         </AnchorPane>
+                        <StackPane layoutX="366.0" layoutY="236.0" prefHeight="30.0" prefWidth="120.0">
+                           <children>
+                              <AnchorPane fx:id="taskPanePrimaryButtonParent">
+                                 <children>
+                                    <Rectangle fx:id="taskPanePrimaryButton" arcHeight="10.0" arcWidth="10.0" fill="#59ff1f" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </StackPane>
                      </children>
                   </AnchorPane>
                </children>

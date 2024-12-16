@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
@@ -20,17 +21,30 @@
                   <AnchorPane fx:id="userPane">
                      <children>
                         <Rectangle fx:id="userBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8f4f4" height="40.0" stroke="#f8f4f4" strokeType="INSIDE" width="100.0" />
-                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="4.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../media/user_default.png" />
-                           </image>
-                        </ImageView>
-                        <Text fx:id="username" layoutX="40.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
-                           <font>
-                              <Font name="0xProto Nerd Font Mono" size="18.0" />
-                           </font>
-                        </Text>
                         <Button fx:id="userButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: transparent;" />
+                        <HBox maxWidth="220.0" prefHeight="40.0">
+                           <children>
+                              <AnchorPane>
+                                 <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../media/user_default.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <Text fx:id="username" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
+                                 <font>
+                                    <Font name="0xProto Nerd Font Mono" size="18.0" />
+                                 </font>
+                              </Text>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/downward-arrow.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
                </children>
