@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.AnchorPane;
@@ -48,6 +49,9 @@ public class InboxPageController implements Initializable {
     @FXML
     TextField taskNameField, taskDescriptionField;
 
+    @FXML
+    ScrollPane taskBoxScroll;
+
     TaskList taskList;
 
     @Override
@@ -63,6 +67,8 @@ public class InboxPageController implements Initializable {
 
     public void setUpTaskPane() {
 
+        taskBoxScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
         taskPane.setScaleX(0);
         taskPane.setScaleY(0);
 
@@ -77,7 +83,11 @@ public class InboxPageController implements Initializable {
         taskPanePrimaryButton.setOnMouseClicked(_ -> {
 
             Task newTask = new TaskBuilder(UUID.randomUUID().toString())
-                .setName(taskNameField.getText())
+                .setName(
+                        (taskNameField.getText().isEmpty())
+                            ? "New Task"
+                            : taskNameField.getText()
+                )
                 .setDescription(taskDescriptionField.getText())
                 .create();
 
@@ -116,7 +126,7 @@ public class InboxPageController implements Initializable {
     public AnchorPane createTaskBox(Task task) {
 
         AnchorPane container = new AnchorPane();
-        container.setPrefHeight(60);
+        container.setPrefHeight(50);
         container.setPrefWidth(taskBoxContainer.getWidth());
 
             Rectangle lineBreaker = new Rectangle();
@@ -131,12 +141,10 @@ public class InboxPageController implements Initializable {
 
             Text taskName = new Text(task.getName());
             taskName.setFont(new Font("Product Sans", 24));
-            taskName.setLayoutX(4);
             taskName.setLayoutY(18);
 
             Text taskDescription = new Text(task.getDescription());
             taskName.setFont(new Font("Product Sans", 18));
-            taskDescription.setLayoutX(4);
             taskDescription.setLayoutY(36);
 
         container.getChildren().addAll(lineBreaker, background, taskName, taskDescription);
