@@ -1,6 +1,6 @@
 package com.greymatcha.todolist.utils;
 
-public class ColorPalette {
+public class Theme {
 
     public static final String light = "#ffffff";
     public static final String medium = "#f8f4f4";

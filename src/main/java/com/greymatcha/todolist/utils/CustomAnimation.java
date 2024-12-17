@@ -14,8 +14,8 @@ public class CustomAnimation {
     public static void buttonHoverEffect(Node button, Rectangle background) {
 
         button.setCursor(Cursor.HAND);
-        button.setOnMouseEntered(_ -> background.setFill(Color.web(ColorPalette.light)));
-        button.setOnMouseExited(_ -> background.setFill(Color.web(ColorPalette.medium)));
+        button.setOnMouseEntered(_ -> background.setFill(Color.web(Theme.light)));
+        button.setOnMouseExited(_ -> background.setFill(Color.web(Theme.medium)));
     }
 
     public static void buttonClickEffect(Node button, Pane parentPane) {

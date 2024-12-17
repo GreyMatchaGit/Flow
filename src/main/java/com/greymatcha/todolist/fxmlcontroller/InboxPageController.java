@@ -1,11 +1,11 @@
 package com.greymatcha.todolist.fxmlcontroller;
 
-import com.greymatcha.todolist.TodoList;
 import com.greymatcha.todolist.models.Task;
 import com.greymatcha.todolist.models.TaskBuilder;
 import com.greymatcha.todolist.models.TaskList;
-import com.greymatcha.todolist.utils.ColorPalette;
 import com.greymatcha.todolist.utils.CustomAnimation;
+import com.greymatcha.todolist.utils.Theme;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -18,7 +18,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -103,7 +102,15 @@ public class InboxPageController implements Initializable {
     public void closeTaskPane() {
 
         contentPane.setEffect(null);
-        CustomAnimation.createScaleTransition(taskPane, 0.0, Duration.millis(100)).play();
+        ScaleTransition animation = CustomAnimation.createScaleTransition(taskPane, 0.0, Duration.millis(100));
+        animation.setOnFinished(_ -> {
+            taskStackPane.setVisible(false);
+        });
+        animation.play();
+    }
+
+    public void openTaskPane(int mode) {
+
     }
 
     public void setUpAddTaskButton() {
@@ -115,6 +122,7 @@ public class InboxPageController implements Initializable {
             contentPane.setEffect(new GaussianBlur());
             taskNameField.clear();
             taskDescriptionField.clear();
+            taskStackPane.setVisible(true);
             CustomAnimation.createScaleTransition(taskPane, 1.0, Duration.millis(100)).play();
         });
     }
@@ -126,17 +134,17 @@ public class InboxPageController implements Initializable {
     public AnchorPane createTaskBox(Task task) {
 
         AnchorPane container = new AnchorPane();
-        container.setPrefHeight(50);
+        container.setPrefHeight(51);
         container.setPrefWidth(taskBoxContainer.getWidth());
 
             Rectangle lineBreaker = new Rectangle();
             lineBreaker.setFill(Color.web("#495456"));
-            lineBreaker.setHeight(container.getPrefHeight() + 1);
+            lineBreaker.setHeight(container.getPrefHeight());
             lineBreaker.setWidth(container.getPrefWidth());
 
             Rectangle background = new Rectangle();
-            background.setFill(Color.web(ColorPalette.medium));
-            background.setHeight(container.getPrefHeight());
+            background.setFill(Color.web(Theme.medium));
+            background.setHeight(container.getPrefHeight() - 1);
             background.setWidth(container.getPrefWidth());
 
             Text taskName = new Text(task.getName());
@@ -147,7 +155,18 @@ public class InboxPageController implements Initializable {
             taskName.setFont(new Font("Product Sans", 18));
             taskDescription.setLayoutY(36);
 
-        container.getChildren().addAll(lineBreaker, background, taskName, taskDescription);
+            Button editTask = new Button();
+            editTask.setCursor(Cursor.HAND);
+            editTask.setPrefWidth(container.getPrefWidth());
+            editTask.setPrefHeight(container.getPrefHeight());
+            editTask.setBackground(null);
+
+            editTask.setOnMouseClicked(_ -> {
+                System.out.println("Supposed to open the task pane here to edit the task. But will do that later.");
+                System.out.println("Task UUID: " + task.getUniqueID());
+            });
+
+        container.getChildren().addAll(lineBreaker, background, taskName, taskDescription, editTask);
 
         return container;
     }
