@@ -36,6 +36,10 @@ public class TaskList {
         return tasks.add(newTask);
     }
 
+    public boolean removeTask(Task task) {
+        return tasks.remove(task);
+    }
+
     public boolean removeTask(String UUID) {
 
         Task taskToRemove = null;

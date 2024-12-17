@@ -30,15 +30,16 @@ import java.util.UUID;
 public class InboxPageController implements Initializable {
 
 
-    @FXML Pane taskPane, addTaskParentPane, contentPane, taskStackPane, taskPaneAddButtonParent, taskPaneApplyButtonParent;
+    @FXML Pane taskPane, addTaskParentPane, contentPane, taskStackPane, taskPaneAddButtonParent, taskPaneApplyButtonParent, taskPaneRemoveButtonParent;
     @FXML ScrollPane taskBoxScroll;
     @FXML VBox taskBoxContainer;
     @FXML TextField taskNameField, taskDescriptionField;
-    @FXML Button addTaskButton, taskPaneApplyButton, taskPaneAddButton;;
+    @FXML Button addTaskButton, taskPaneApplyButton, taskPaneAddButton, taskPaneRemoveButton;
     @FXML Circle taskPaneCloseButton;
 
     TaskList taskList;
 
+    private Pane selectedRoot;
     private Task selectedTask;
     private Text selectedTaskName;
     private Text selectedTaskDescription;
@@ -65,6 +66,7 @@ public class InboxPageController implements Initializable {
     public void setUpAddTaskButton() {
 
         CustomAnimation.buttonClickEffect(addTaskButton, addTaskParentPane);
+        addTaskButton.setCursor(Cursor.HAND);
         addTaskButton.setOnMouseClicked(_ -> openTaskPane(Mode.ADD_TASK));
     }
 
@@ -81,18 +83,26 @@ public class InboxPageController implements Initializable {
         taskPaneCloseButton.setCursor(Cursor.HAND);
         taskPaneCloseButton.setOnMouseClicked(_ -> closeTaskPane());
 
+        setupAddButton();
+        setupApplyButton();
+        setupRemoveButton();
+    }
+
+    public void setupAddButton() {
+
         CustomAnimation.buttonClickEffect(taskPaneAddButton, taskPaneAddButtonParent);
         taskPaneAddButton.setCursor(Cursor.HAND);
+
         taskPaneAddButton.setOnMouseClicked(_ -> {
 
             Task newTask = new TaskBuilder(UUID.randomUUID().toString())
-                .setName(
-                        (taskNameField.getText().isEmpty())
-                            ? "New Task"
-                            : taskNameField.getText()
-                )
-                .setDescription(taskDescriptionField.getText())
-                .create();
+                    .setName(
+                            (taskNameField.getText().isEmpty())
+                                    ? "New Task"
+                                    : taskNameField.getText()
+                    )
+                    .setDescription(taskDescriptionField.getText())
+                    .create();
 
             if (taskList.addTask(newTask)) {
 
@@ -101,9 +111,33 @@ public class InboxPageController implements Initializable {
 
             closeTaskPane();
         });
+    }
+
+    public void setupRemoveButton() {
+
+        CustomAnimation.buttonClickEffect(taskPaneRemoveButton, taskPaneRemoveButtonParent);
+        taskPaneRemoveButton.setCursor(Cursor.HAND);
+
+        taskPaneRemoveButton.setOnMouseClicked(_ -> {
+
+            if (!taskList.removeTask(selectedTask))
+                throw new RuntimeException("Task doesn't exist in the list.");
+
+            taskBoxContainer.getChildren().remove(selectedRoot);
+            selectedTask = null;
+            selectedRoot = null;
+            selectedTaskName = null;
+            selectedTaskDescription = null;
+
+            closeTaskPane();
+        });
+    }
+
+    public void setupApplyButton() {
 
         CustomAnimation.buttonClickEffect(taskPaneApplyButton, taskPaneApplyButtonParent);
         taskPaneApplyButton.setCursor(Cursor.HAND);
+
         taskPaneApplyButton.setOnMouseClicked(_ -> {
 
             selectedTask.setName(taskNameField.getText());
@@ -135,13 +169,18 @@ public class InboxPageController implements Initializable {
         if (mode.equals(Mode.ADD_TASK)) {
             taskNameField.clear();
             taskDescriptionField.clear();
+
             taskPaneApplyButtonParent.setVisible(false);
+            taskPaneRemoveButtonParent.setVisible(false);
             taskPaneAddButtonParent.setVisible(true);
         } else {
-            if (task == null) throw new IllegalArgumentException("Mode.EDIT_TASK must have a task passed.");
+            if (task == null)
+                throw new IllegalArgumentException("Mode.EDIT_TASK must have a task passed.");
 
             taskPaneApplyButtonParent.setVisible(true);
+            taskPaneRemoveButtonParent.setVisible(true);
             taskPaneAddButtonParent.setVisible(false);
+
             taskNameField.setText(task[0].getName());
             taskDescriptionField.setText(task[0].getDescription());
             selectedTask = task[0];
@@ -184,6 +223,7 @@ public class InboxPageController implements Initializable {
 
             editTask.setOnMouseClicked(_ -> {
 
+                selectedRoot = container;
                 selectedTaskName = taskName;
                 selectedTaskDescription = taskDescription;
                 openTaskPane(Mode.EDIT_TASK, task);

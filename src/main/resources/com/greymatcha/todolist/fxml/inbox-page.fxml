@@ -37,7 +37,7 @@
                                        <children>
                                           <AnchorPane fx:id="addTaskParentPane">
                                              <children>
-                                                <Rectangle fx:id="addTaskBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8baba" height="40.0" stroke="WHITE" strokeType="INSIDE" width="100.0" />
+                                                <Rectangle fx:id="addTaskBackground" arcHeight="10.0" arcWidth="10.0" fill="#ff605c" height="40.0" stroke="WHITE" strokeType="INSIDE" width="100.0" />
                                                 <Text layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Task">
                                                    <font>
                                                       <Font size="16.0" />
@@ -79,31 +79,58 @@
                            </font></TextField>
                         <AnchorPane layoutX="16.0" layoutY="16.0">
                            <children>
-                              <Circle fx:id="taskPaneCloseButton" fill="RED" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Circle fx:id="taskPaneCloseButton" fill="#ff605c" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                            </children>
                         </AnchorPane>
                         <StackPane layoutX="366.0" layoutY="236.0" prefHeight="30.0" prefWidth="120.0">
                            <children>
                               <AnchorPane fx:id="taskPaneAddButtonParent">
                                  <children>
-                                    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#59ff1f" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
-                                    <Text layoutX="47.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Text>
-                                    <Button fx:id="taskPaneAddButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: transparent;" />
+                                    <StackPane>
+                                       <children>
+                                          <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#00ca4e" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Text>
+                                          <Button fx:id="taskPaneAddButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: transparent;" />
+                                       </children>
+                                    </StackPane>
                                  </children>
                               </AnchorPane>
                               <AnchorPane fx:id="taskPaneApplyButtonParent">
                                  <children>
-                                    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#59ff1f" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
-                                    <Text layoutX="43.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apply">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </Text>
-                                    <Button fx:id="taskPaneApplyButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: transparent;" />
+                                    <StackPane>
+                                       <children>
+                                          <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#00ca4e" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Apply">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Text>
+                                          <Button fx:id="taskPaneApplyButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: transparent;" />
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </StackPane>
+                        <StackPane layoutX="230.0" layoutY="236.0">
+                           <children>
+                              <AnchorPane fx:id="taskPaneRemoveButtonParent">
+                                 <children>
+                                    <StackPane>
+                                       <children>
+                                          <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffbd44" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Text>
+                                          <Button fx:id="taskPaneRemoveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: transparent;" />
+                                       </children>
+                                    </StackPane>
                                  </children>
                               </AnchorPane>
                            </children>
