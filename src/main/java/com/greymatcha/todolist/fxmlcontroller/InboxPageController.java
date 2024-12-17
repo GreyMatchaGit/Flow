@@ -30,38 +30,42 @@ import java.util.UUID;
 public class InboxPageController implements Initializable {
 
 
-    @FXML
-    Button addTaskButton;
-
-    @FXML
-    Circle taskPaneCloseButton;
-
-    @FXML
-    Rectangle taskPanePrimaryButton;
-
-    @FXML
-    Pane taskPane, addTaskParentPane, contentPane, taskStackPane, taskPanePrimaryButtonParent;
-
-    @FXML
-    VBox taskBoxContainer;
-
-    @FXML
-    TextField taskNameField, taskDescriptionField;
-
-    @FXML
-    ScrollPane taskBoxScroll;
+    @FXML Pane taskPane, addTaskParentPane, contentPane, taskStackPane, taskPaneAddButtonParent, taskPaneApplyButtonParent;
+    @FXML ScrollPane taskBoxScroll;
+    @FXML VBox taskBoxContainer;
+    @FXML TextField taskNameField, taskDescriptionField;
+    @FXML Button addTaskButton, taskPaneApplyButton, taskPaneAddButton;;
+    @FXML Circle taskPaneCloseButton;
 
     TaskList taskList;
+
+    private Task selectedTask;
+    private Text selectedTaskName;
+    private Text selectedTaskDescription;
+
+    enum Mode {
+        ADD_TASK,
+        EDIT_TASK
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         taskList = TaskList.getInstance();
+        selectedTask = null;
+        selectedTaskName = null;
+        selectedTaskDescription = null;
 
         taskStackPane.setVisible(true); // temporary for frontend dev purposes
 
         setUpTaskPane();
         setUpAddTaskButton();
+    }
+
+    public void setUpAddTaskButton() {
+
+        CustomAnimation.buttonClickEffect(addTaskButton, addTaskParentPane);
+        addTaskButton.setOnMouseClicked(_ -> openTaskPane(Mode.ADD_TASK));
     }
 
     public void setUpTaskPane() {
@@ -77,9 +81,9 @@ public class InboxPageController implements Initializable {
         taskPaneCloseButton.setCursor(Cursor.HAND);
         taskPaneCloseButton.setOnMouseClicked(_ -> closeTaskPane());
 
-        CustomAnimation.buttonClickEffect(taskPanePrimaryButton, taskPanePrimaryButtonParent);
-        taskPanePrimaryButton.setCursor(Cursor.HAND);
-        taskPanePrimaryButton.setOnMouseClicked(_ -> {
+        CustomAnimation.buttonClickEffect(taskPaneAddButton, taskPaneAddButtonParent);
+        taskPaneAddButton.setCursor(Cursor.HAND);
+        taskPaneAddButton.setOnMouseClicked(_ -> {
 
             Task newTask = new TaskBuilder(UUID.randomUUID().toString())
                 .setName(
@@ -97,11 +101,24 @@ public class InboxPageController implements Initializable {
 
             closeTaskPane();
         });
+
+        CustomAnimation.buttonClickEffect(taskPaneApplyButton, taskPaneApplyButtonParent);
+        taskPaneApplyButton.setCursor(Cursor.HAND);
+        taskPaneApplyButton.setOnMouseClicked(_ -> {
+
+            selectedTask.setName(taskNameField.getText());
+            selectedTask.setDescription(taskDescriptionField.getText());
+            selectedTaskName.setText(taskNameField.getText());
+            selectedTaskDescription.setText(taskDescriptionField.getText());
+
+            closeTaskPane();
+        });
     }
 
     public void closeTaskPane() {
 
         contentPane.setEffect(null);
+        selectedTask = null;
         ScaleTransition animation = CustomAnimation.createScaleTransition(taskPane, 0.0, Duration.millis(100));
         animation.setOnFinished(_ -> {
             taskStackPane.setVisible(false);
@@ -109,22 +126,26 @@ public class InboxPageController implements Initializable {
         animation.play();
     }
 
-    public void openTaskPane(int mode) {
+    public void openTaskPane(Mode mode, Task... task) {
 
-    }
+        contentPane.setEffect(new GaussianBlur());
+        taskStackPane.setVisible(true);
+        CustomAnimation.createScaleTransition(taskPane, 1.0, Duration.millis(100)).play();
 
-    public void setUpAddTaskButton() {
-
-        CustomAnimation.buttonClickEffect(addTaskButton, addTaskParentPane);
-
-        addTaskButton.setOnMouseClicked(_ -> {
-
-            contentPane.setEffect(new GaussianBlur());
+        if (mode.equals(Mode.ADD_TASK)) {
             taskNameField.clear();
             taskDescriptionField.clear();
-            taskStackPane.setVisible(true);
-            CustomAnimation.createScaleTransition(taskPane, 1.0, Duration.millis(100)).play();
-        });
+            taskPaneApplyButtonParent.setVisible(false);
+            taskPaneAddButtonParent.setVisible(true);
+        } else {
+            if (task == null) throw new IllegalArgumentException("Mode.EDIT_TASK must have a task passed.");
+
+            taskPaneApplyButtonParent.setVisible(true);
+            taskPaneAddButtonParent.setVisible(false);
+            taskNameField.setText(task[0].getName());
+            taskDescriptionField.setText(task[0].getDescription());
+            selectedTask = task[0];
+        }
     }
 
     public void displayTaskBoxes() {
@@ -138,7 +159,7 @@ public class InboxPageController implements Initializable {
         container.setPrefWidth(taskBoxContainer.getWidth());
 
             Rectangle lineBreaker = new Rectangle();
-            lineBreaker.setFill(Color.web("#495456"));
+            lineBreaker.setFill(Color.web(Theme.dark));
             lineBreaker.setHeight(container.getPrefHeight());
             lineBreaker.setWidth(container.getPrefWidth());
 
@@ -148,12 +169,12 @@ public class InboxPageController implements Initializable {
             background.setWidth(container.getPrefWidth());
 
             Text taskName = new Text(task.getName());
-            taskName.setFont(new Font("Product Sans", 24));
+            taskName.setFont(new Font(Theme.FONT_FAMILY, 24));
             taskName.setLayoutY(18);
 
             Text taskDescription = new Text(task.getDescription());
-            taskName.setFont(new Font("Product Sans", 18));
-            taskDescription.setLayoutY(36);
+            taskName.setFont(new Font(Theme.FONT_FAMILY, 18));
+            taskDescription.setLayoutY(38);
 
             Button editTask = new Button();
             editTask.setCursor(Cursor.HAND);
@@ -162,7 +183,10 @@ public class InboxPageController implements Initializable {
             editTask.setBackground(null);
 
             editTask.setOnMouseClicked(_ -> {
-                System.out.println("Supposed to open the task pane here to edit the task. But will do that later.");
+
+                selectedTaskName = taskName;
+                selectedTaskDescription = taskDescription;
+                openTaskPane(Mode.EDIT_TASK, task);
                 System.out.println("Task UUID: " + task.getUniqueID());
             });
 

@@ -54,7 +54,7 @@
                         </AnchorPane>
                         <ScrollPane fx:id="taskBoxScroll" minHeight="480.0" style="-fx-background-color: transparent;">
                            <content>
-                              <VBox fx:id="taskBoxContainer" prefHeight="500.0" prefWidth="542.0" spacing="6.0" />
+                              <VBox fx:id="taskBoxContainer" prefWidth="542.0" spacing="6.0" />
                            </content>
                         </ScrollPane>
                      </children>
@@ -64,7 +64,7 @@
                   </VBox>
                </center>
             </BorderPane>
-            <StackPane fx:id="taskStackPane" layoutX="150.0" layoutY="150.0" prefHeight="280.0" prefWidth="500.0" visible="false">
+            <StackPane fx:id="taskStackPane" layoutX="150.0" layoutY="150.0" prefHeight="280.0" prefWidth="500.0">
                <children>
                   <AnchorPane fx:id="taskPane">
                      <children>
@@ -84,9 +84,26 @@
                         </AnchorPane>
                         <StackPane layoutX="366.0" layoutY="236.0" prefHeight="30.0" prefWidth="120.0">
                            <children>
-                              <AnchorPane fx:id="taskPanePrimaryButtonParent">
+                              <AnchorPane fx:id="taskPaneAddButtonParent">
                                  <children>
-                                    <Rectangle fx:id="taskPanePrimaryButton" arcHeight="10.0" arcWidth="10.0" fill="#59ff1f" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
+                                    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#59ff1f" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
+                                    <Text layoutX="47.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Text>
+                                    <Button fx:id="taskPaneAddButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: transparent;" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="taskPaneApplyButtonParent">
+                                 <children>
+                                    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#59ff1f" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="120.0" />
+                                    <Text layoutX="43.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apply">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Text>
+                                    <Button fx:id="taskPaneApplyButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: transparent;" />
                                  </children>
                               </AnchorPane>
                            </children>
