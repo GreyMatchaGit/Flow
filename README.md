@@ -1,1 +1,1 @@
-Flow is a solution for centralizing all the productivity tools that I found useful.
+Flow is a solution for centralizing all the productivity tools that I personally use.
