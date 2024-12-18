@@ -16,13 +16,12 @@
    <children>
       <AnchorPane minHeight="60.0">
          <children>
-            <StackPane layoutX="10.0" layoutY="13.0" prefHeight="40.0" prefWidth="100.0">
+            <StackPane layoutX="10.0" layoutY="13.0" prefHeight="30.0" prefWidth="100.0">
                <children>
                   <AnchorPane fx:id="userPane">
                      <children>
-                        <Rectangle fx:id="userBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8f4f4" height="40.0" stroke="#f8f4f4" strokeType="INSIDE" width="100.0" />
-                        <Button fx:id="userButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: transparent;" />
-                        <HBox maxWidth="220.0" prefHeight="40.0">
+                        <Rectangle fx:id="userBackground" arcHeight="10.0" arcWidth="10.0" fill="#f8f4f4" height="40.0" stroke="#f8f4f4" strokeType="INSIDE" width="120.0" />
+                        <HBox layoutX="5.0" layoutY="5.0" maxWidth="220.0" minHeight="30.0" spacing="7.0">
                            <children>
                               <AnchorPane>
                                  <children>
@@ -33,18 +32,27 @@
                                     </ImageView>
                                  </children>
                               </AnchorPane>
-                              <Text fx:id="username" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
-                                 <font>
-                                    <Font name="0xProto Nerd Font Mono" size="18.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/downward-arrow.png" />
-                                 </image>
-                              </ImageView>
+                              <AnchorPane>
+                                 <children>
+                                    <Text fx:id="username" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
+                                       <font>
+                                          <Font name="0xProto Nerd Font Mono" size="18.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane>
+                                 <children>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../media/downward-arrow.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </HBox>
+                        <Button fx:id="userButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: transparent;" />
                      </children>
                   </AnchorPane>
                </children>
@@ -59,7 +67,7 @@
                   <Image url="@../media/inbox.png" />
                </image>
             </ImageView>
-            <Text layoutX="50.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inbox" y="6.0">
+            <Text layoutX="50.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Todo List" y="6.0">
                <font>
                   <Font name="0xProto Nerd Font Mono" size="16.0" />
                </font>
@@ -78,7 +86,7 @@
                   <Image url="@../media/inbox.png" />
                </image>
             </ImageView>
-            <Text layoutX="50.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Today" y="6.0">
+            <Text layoutX="50.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Feature" y="6.0">
                <font>
                   <Font name="0xProto Nerd Font Mono" size="16.0" />
                </font>

@@ -2,6 +2,7 @@ package com.greymatcha.flow.utils;
 
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -12,12 +13,14 @@ public class CustomAnimation {
 
     public static void buttonHoverEffect(Node button, Rectangle background) {
 
+        button.setCursor(Cursor.HAND);
         button.setOnMouseEntered(_ -> background.setFill(Color.web(Theme.light)));
         button.setOnMouseExited(_ -> background.setFill(Color.web(Theme.medium)));
     }
 
     public static void buttonClickEffect(Node button, Pane parentPane) {
 
+        button.setCursor(Cursor.HAND);
         button.setOnMousePressed(_ -> createScaleTransition(parentPane, 0.95, Duration.millis(50)).play());
         button.setOnMouseReleased(_ -> createScaleTransition(parentPane, 1.0, Duration.millis(50)).play());
     }
