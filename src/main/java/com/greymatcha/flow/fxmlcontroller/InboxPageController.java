@@ -1,10 +1,10 @@
-package com.greymatcha.todolist.fxmlcontroller;
+package com.greymatcha.flow.fxmlcontroller;
 
-import com.greymatcha.todolist.models.Task;
-import com.greymatcha.todolist.models.TaskBuilder;
-import com.greymatcha.todolist.models.TaskList;
-import com.greymatcha.todolist.utils.CustomAnimation;
-import com.greymatcha.todolist.utils.Theme;
+import com.greymatcha.flow.models.Task;
+import com.greymatcha.flow.models.TaskBuilder;
+import com.greymatcha.flow.models.TaskList;
+import com.greymatcha.flow.utils.CustomAnimation;
+import com.greymatcha.flow.utils.Theme;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

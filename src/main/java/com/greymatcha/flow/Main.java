@@ -1,6 +1,6 @@
-package com.greymatcha.todolist;
+package com.greymatcha.flow;
 
-import com.greymatcha.todolist.utils.StringUtil;
+import com.greymatcha.flow.utils.StringUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class TodoList extends Application {
+public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -16,7 +16,7 @@ public class TodoList extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(StringUtil.getFXML("inbox-page"));
 
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("TodoList");
+        stage.setTitle("Flow");
 
         stage.setScene(scene);
         stage.show();

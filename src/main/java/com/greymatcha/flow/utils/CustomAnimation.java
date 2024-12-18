@@ -1,8 +1,7 @@
-package com.greymatcha.todolist.utils;
+package com.greymatcha.flow.utils;
 
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

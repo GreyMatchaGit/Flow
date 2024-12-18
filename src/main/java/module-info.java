@@ -1,4 +1,4 @@
-module com.greymatcha.todolist {
+module com.greymatcha.flow {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -8,13 +8,14 @@ module com.greymatcha.todolist {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires eu.hansolo.tilesfx;
-    requires java.desktop;
+    requires javafx.graphics;
 
-    opens com.greymatcha.todolist to javafx.fxml;
-    opens com.greymatcha.todolist.fxmlcontroller;
-    opens com.greymatcha.todolist.models;
+    opens com.greymatcha.flow to javafx.fxml;
+    opens com.greymatcha.flow.fxmlcontroller;
+    opens com.greymatcha.flow.models;
+    opens com.greymatcha.flow.utils;
 
-    exports com.greymatcha.todolist;
-    exports com.greymatcha.todolist.models;
-    exports com.greymatcha.todolist.fxmlcontroller;
+    exports com.greymatcha.flow;
+    exports com.greymatcha.flow.models;
+    exports com.greymatcha.flow.fxmlcontroller;
 }

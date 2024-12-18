@@ -1,6 +1,6 @@
-package com.greymatcha.todolist.fxmlcontroller;
+package com.greymatcha.flow.fxmlcontroller;
 
-import com.greymatcha.todolist.utils.CustomAnimation;
+import com.greymatcha.flow.utils.CustomAnimation;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
