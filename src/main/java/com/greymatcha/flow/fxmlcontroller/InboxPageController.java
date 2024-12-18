@@ -57,8 +57,6 @@ public class InboxPageController implements Initializable {
         selectedTaskName = null;
         selectedTaskDescription = null;
 
-        taskStackPane.setVisible(true); // temporary for frontend dev purposes
-
         setUpTaskPane();
         setUpAddTaskButton();
     }
