@@ -76,7 +76,7 @@ public class TodolistController implements Initializable {
 
     private void setupAddTaskButton() {
         addTaskButton.setCursor(Cursor.HAND);
-        addTaskButton.setOnMouseClicked(event -> {
+        addTaskButton.setOnMousePressed(event -> {
             MyAnimation.shrinkButtonSize(addTaskParentPane);
             openTaskPane(Mode.ADD_TASK);
         });
@@ -106,7 +106,7 @@ public class TodolistController implements Initializable {
 
     private void setupAddButton() {
         taskPaneAddButton.setCursor(Cursor.HAND);
-        taskPaneAddButton.setOnMouseClicked(event -> {
+        taskPaneAddButton.setOnMousePressed(event -> {
             MyAnimation.shrinkButtonSize(taskPaneAddButtonParent);
             addNewTask();
             closeTaskPane();
@@ -128,7 +128,7 @@ public class TodolistController implements Initializable {
 
     private void setupRemoveButton() {
         taskPaneRemoveButton.setCursor(Cursor.HAND);
-        taskPaneRemoveButton.setOnMouseClicked(event -> {
+        taskPaneRemoveButton.setOnMousePressed(event -> {
             MyAnimation.shrinkButtonSize(taskPaneRemoveButtonParent);
             removeSelectedTask();
             closeTaskPane();
@@ -153,7 +153,7 @@ public class TodolistController implements Initializable {
 
     private void setupApplyButton() {
         taskPaneApplyButton.setCursor(Cursor.HAND);
-        taskPaneApplyButton.setOnMouseClicked(event -> {
+        taskPaneApplyButton.setOnMousePressed(event -> {
             MyAnimation.shrinkButtonSize(taskPaneApplyButtonParent);
             updateSelectedTask();
             closeTaskPane();

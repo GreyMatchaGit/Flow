@@ -26,8 +26,8 @@ public class MyAnimation {
     public static void buttonClickEffect(Node button, Pane parentPane) {
 
         button.setCursor(Cursor.HAND);
-        button.setOnMousePressed(_ -> createScaleTransition(parentPane, 0.95, Duration.millis(50)).play());
-        button.setOnMouseReleased(_ -> createScaleTransition(parentPane, 1.0, Duration.millis(50)).play());
+        button.setOnMousePressed(_ -> createScaleTransition(parentPane, CLICK_SHRINK_FACTOR, Duration.millis(50)).play());
+        button.setOnMouseReleased(_ -> createScaleTransition(parentPane, CLICK_DEFAULT_FACTOR, Duration.millis(50)).play());
     }
 
     public static void shrinkButtonSize(Node parentPane) {
