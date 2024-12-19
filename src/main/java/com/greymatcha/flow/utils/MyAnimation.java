@@ -9,7 +9,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class CustomAnimation {
+public class MyAnimation {
+
+    public static final Duration CLICK_DURATION_MILLIS = Duration.millis(50);
+    public static final double CLICK_SHRINK_FACTOR = 0.95;
+    public static final double CLICK_DEFAULT_FACTOR = 1.0;
+    public static final double CLICK_GROW_FACTOR = 1.05;
 
     public static void buttonHoverEffect(Node button, Rectangle background) {
 
@@ -23,6 +28,14 @@ public class CustomAnimation {
         button.setCursor(Cursor.HAND);
         button.setOnMousePressed(_ -> createScaleTransition(parentPane, 0.95, Duration.millis(50)).play());
         button.setOnMouseReleased(_ -> createScaleTransition(parentPane, 1.0, Duration.millis(50)).play());
+    }
+
+    public static void shrinkButtonSize(Node parentPane) {
+        createScaleTransition(parentPane, CLICK_SHRINK_FACTOR, CLICK_DURATION_MILLIS).play();
+    }
+
+    public static void resetButtonSize(Node parentPane) {
+        createScaleTransition(parentPane, CLICK_DEFAULT_FACTOR, CLICK_DURATION_MILLIS).play();
     }
 
     public static ScaleTransition createScaleTransition(Node node, Double scalingFactor, Duration duration) {

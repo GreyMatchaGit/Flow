@@ -1,0 +1,7 @@
+#taskListScrollPane .viewport {
+    -fx-background-color: transparent;
+}
+
+#taskListScrollPane {
+    -fx-background-color: transparent;
+}

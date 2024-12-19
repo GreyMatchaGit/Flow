@@ -1,4 +1,4 @@
-package com.greymatcha.flow.models;
+package com.greymatcha.flow.models.tasklist;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -9,12 +9,10 @@ public class TaskList {
     private final ArrayList<Task> tasks;
 
     private TaskList() {
-
         tasks = new ArrayList<>();
     }
 
     public static TaskList getInstance() {
-
         if (instance == null)
             instance = new TaskList();
 
@@ -22,12 +20,10 @@ public class TaskList {
     }
 
     public boolean addTask(Task task) {
-
         return tasks.add(task);
     }
 
     public boolean addTask(String name, String description) {
-
         Task newTask = new TaskBuilder(UUID.randomUUID().toString())
                 .setName(name)
                 .setDescription(description)
@@ -41,18 +37,13 @@ public class TaskList {
     }
 
     public boolean removeTask(String UUID) {
-
         Task taskToRemove = null;
-
         for (Task task : tasks) {
-
             if (task.getUniqueID().equals(UUID)) {
-
                 taskToRemove = task;
                 break;
             }
         }
-
         return tasks.remove(taskToRemove);
     }
 

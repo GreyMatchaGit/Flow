@@ -1,4 +1,4 @@
-package com.greymatcha.flow.models;
+package com.greymatcha.flow.models.tasklist;
 
 public class TaskBuilder {
 

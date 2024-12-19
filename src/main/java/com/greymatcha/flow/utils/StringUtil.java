@@ -6,9 +6,13 @@ import java.net.URL;
 
 public class StringUtil {
 
-    public static URL getFXML(String fileName) {
+    private static String resourcePath =  "/com/greymatcha/flow/";
 
-        String precedingPath = "/com/greymatcha/flow/fxml/";
-        return Main.class.getResource(precedingPath + fileName + ".fxml");
+    public static URL getFXML(String fileName) {
+        return Main.class.getResource(resourcePath + "fxml/" + fileName + ".fxml");
+    }
+
+    public static String getImage(String fileName) {
+        return Main.class.getResource(resourcePath + "media/" + fileName).toString();
     }
 }

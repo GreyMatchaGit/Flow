@@ -11,11 +11,11 @@ module com.greymatcha.flow {
     requires javafx.graphics;
 
     opens com.greymatcha.flow to javafx.fxml;
-    opens com.greymatcha.flow.fxmlcontroller;
-    opens com.greymatcha.flow.models;
+    opens com.greymatcha.flow.fxmlcontrollers;
+    opens com.greymatcha.flow.models.tasklist;
     opens com.greymatcha.flow.utils;
 
     exports com.greymatcha.flow;
-    exports com.greymatcha.flow.models;
-    exports com.greymatcha.flow.fxmlcontroller;
+    exports com.greymatcha.flow.fxmlcontrollers;
+    exports com.greymatcha.flow.models.tasklist;
 }
