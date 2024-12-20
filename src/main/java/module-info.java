@@ -9,6 +9,10 @@ module com.greymatcha.flow {
     requires org.kordamp.ikonli.javafx;
     requires eu.hansolo.tilesfx;
     requires javafx.graphics;
+    requires com.google.gson;
+    requires java.logging;
+    requires annotations;
+    requires jdk.xml.dom;
 
     opens com.greymatcha.flow to javafx.fxml;
     opens com.greymatcha.flow.fxmlcontrollers;

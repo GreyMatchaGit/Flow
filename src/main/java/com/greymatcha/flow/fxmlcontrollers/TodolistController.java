@@ -1,5 +1,6 @@
 package com.greymatcha.flow.fxmlcontrollers;
 
+import com.greymatcha.flow.models.smartdate.DateIdentifier;
 import com.greymatcha.flow.models.tasklist.Task;
 import com.greymatcha.flow.models.tasklist.TaskBuilder;
 import com.greymatcha.flow.models.tasklist.TaskList;
@@ -7,14 +8,12 @@ import com.greymatcha.flow.utils.MyAnimation;
 import com.greymatcha.flow.utils.StringUtil;
 import com.greymatcha.flow.utils.Theme;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,10 +23,13 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import org.w3c.dom.css.Rect;
 
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -41,6 +43,8 @@ public class TodolistController implements Initializable {
     public VBox taskListVBox;
     @FXML
     public TextField taskNameField, taskDescriptionField;
+    @FXML
+    public TextFlow taskNameTextFlow;
     @FXML
     public Button addTaskButton, taskPaneApplyButton, taskPaneAddButton, taskPaneRemoveButton;
     @FXML
@@ -65,6 +69,13 @@ public class TodolistController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         taskList = TaskList.getInstance();
+
+        Platform.runLater(() -> {
+            Font font = (new Font("System", 16));
+            taskNameField.setFont(font);
+            taskDescriptionField.setFont(font);
+        });
+
         setupUI();
     }
 
@@ -100,8 +111,58 @@ public class TodolistController implements Initializable {
         taskPane.setScaleX(0);
         taskPane.setScaleY(0);
         taskNameField.setBackground(null);
+
+        new Thread(() -> taskNameField.setOnKeyReleased(keyEvent -> {
+            String taskName = taskNameField.getText();
+            ZonedDateTime extractedDate = DateIdentifier.extractDate(taskName);
+            if (extractedDate != null) {
+                String wordWithDate = DateIdentifier.getLatestExtractedWord();
+                updateTaskNameTextFlow(wordWithDate, taskName);
+            } else resetTaskNameTextFlow();
+        })).start();
+
         taskDescriptionField.setBackground(null);
         taskPaneCloseButton.setCursor(Cursor.HAND);
+    }
+
+    private void updateTaskNameTextFlow(String highlightedPortion, String entireText) {
+        highlightedPortion = highlightedPortion.toLowerCase();
+        int start = entireText.toLowerCase().indexOf(highlightedPortion);
+        int end = start + highlightedPortion.length();
+
+        Font font = (new Font("System", 16));
+
+        AnchorPane leftText = createTextPane(entireText.substring(0, start), font, false);
+
+        AnchorPane highlightedText = createTextPane(entireText.substring(start, end), font, true);
+
+        AnchorPane rightText = createTextPane(entireText.substring(end), font, false);
+
+        resetTaskNameTextFlow();
+        taskNameTextFlow.getChildren().addAll(leftText, highlightedText, rightText);
+    }
+
+    public void resetTaskNameTextFlow() {
+        taskNameTextFlow.getChildren().clear();
+    }
+
+    public AnchorPane createTextPane(String message, Font font, boolean isHighlighted) {
+        Text text = new Text(message);
+        text.setLayoutY(23);
+        text.setLayoutX(5);
+        text.setFont(font);
+        text.setFill(Color.web("#ffffff"));
+
+        AnchorPane background = new AnchorPane();
+        background.getChildren().add(text);
+
+        if (isHighlighted) {
+            text.setFill(Color.web(Theme.SUNSET_ORANGE));
+            background.setStyle("-fx-border-radius: 25; -fx-background-color: " + Theme.SUNSET_ORANGE + ";");
+
+        }
+
+        return background;
     }
 
     private void setupAddButton() {

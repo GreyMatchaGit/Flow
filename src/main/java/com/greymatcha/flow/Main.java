@@ -1,5 +1,6 @@
 package com.greymatcha.flow;
 
+import com.greymatcha.flow.models.smartdate.DateIdentifier;
 import com.greymatcha.flow.utils.StringUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(StringUtil.getFXML("inbox-page"));
+
+        DateIdentifier.setTimeWords();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(StringUtil.getFXML("todolist-page"));
 
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Flow");
