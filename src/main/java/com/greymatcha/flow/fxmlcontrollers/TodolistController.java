@@ -48,6 +48,8 @@ public class TodolistController implements Initializable {
     public Button addTaskButton, taskPaneApplyButton, taskPaneAddButton, taskPaneRemoveButton;
     @FXML
     public Circle taskPaneCloseButton;
+    @FXML
+    public Rectangle backgroundDimmer;
 
     private TaskList taskList;
     private Pane selectedRoot;
@@ -155,7 +157,7 @@ public class TodolistController implements Initializable {
         background.setPadding(new Insets(-2, 0, -2, 0));
 
         if (isHighlighted) {
-            background.setStyle("-fx-border-radius: 25; -fx-background-color: " + Theme.SUNSET_ORANGE + ";");
+            background.setStyle("-fx-background-radius: 4; -fx-background-color: " + Theme.SUNSET_ORANGE + ";");
         }
 
         return background;
@@ -235,6 +237,7 @@ public class TodolistController implements Initializable {
 
     private void closeTaskPane() {
         contentPane.setEffect(null);
+        backgroundDimmer.setVisible(false);
         clearSelectedTask();
         ScaleTransition animation = MyAnimation.createScaleTransition(taskPane, 0.0, Duration.millis(100));
         animation.setOnFinished(event -> taskStackPane.setVisible(false));
@@ -245,6 +248,7 @@ public class TodolistController implements Initializable {
         contentPane.setEffect(new GaussianBlur());
         taskStackPane.setVisible(true);
         MyAnimation.createScaleTransition(taskPane, 1.0, Duration.millis(100)).play();
+        backgroundDimmer.setVisible(true);
 
         if (mode == Mode.ADD_TASK) {
             taskNameField.clear();

@@ -67,6 +67,7 @@
                   </VBox>
                </center>
             </BorderPane>
+            <Rectangle fx:id="backgroundDimmer" fill="#0000004d" height="600.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" width="784.0" />
             <StackPane fx:id="taskStackPane" layoutX="150.0" layoutY="150.0" prefHeight="280.0" prefWidth="500.0">
                <children>
                   <AnchorPane fx:id="taskPane">
