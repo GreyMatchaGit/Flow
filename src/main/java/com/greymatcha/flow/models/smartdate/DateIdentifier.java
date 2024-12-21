@@ -1,6 +1,6 @@
 package com.greymatcha.flow.models.smartdate;
 
-import com.greymatcha.flow.utils.StringUtil;
+import com.greymatcha.flow.utils.Util;
 
 import java.time.*;
 import java.util.*;
@@ -15,47 +15,47 @@ public class DateIdentifier {
 
     private static String latestExtractedWord;
 
-    public static void intialize() {
+    public static void initialize() {
         USER_TIMEZONE = "Asia/Manila";
         setTimeWords();
     }
 
-    public static void setTimeWords() {
+    private static void setTimeWords() {
         String[] temp = {"today", "tomorrow", "yesterday", "now", "again"};
         TIME_WORDS = new HashSet<>();
-        List.of(temp).forEach(word -> TIME_WORDS.add(StringUtil.sort(word)));
+        List.of(temp).forEach(
+            word -> TIME_WORDS.add(
+                Util.sort(word)
+            )
+        );
     }
 
     public static ZonedDateTime extractDate(String string) {
-        String[] tokens = string.toLowerCase().trim().split(REGEX_WHITESPACE);
-        StringBuilder stringBuilder = new StringBuilder(string);
+        String[] tokens = tokenizeString(string);
         ZonedDateTime extractedDate = null;
-        boolean foundTimeWord = false;
         String extractedWord = "";
 
         for (String token : tokens) {
-            String sortedToken = StringUtil.sort(token);
-
-            if (!foundTimeWord && TIME_WORDS.contains(sortedToken)) {
+            String sortedToken = Util.sort(token);
+            if (TIME_WORDS.contains(sortedToken)) {
                 extractedDate = getMatchingDate(sortedToken);
                 extractedWord = token;
-                foundTimeWord = true;
-                continue;
+                break;
             }
-
-            stringBuilder.append(token).append(" ");
         }
 
-        if (extractedDate != null) {
-            string = stringBuilder.toString();
-            if (!extractedWord.equals(latestExtractedWord)) {
-                System.out.println("Extracted date: " + extractedDate);
-                latestExtractedWord = extractedWord;
-            }
-            return extractedDate;
+        if (extractedDate == null) return null;
+
+        if (!extractedWord.equals(latestExtractedWord)) {
+            System.out.println("Extracted date: " + extractedDate);
+            latestExtractedWord = extractedWord;
         }
 
-        return null;
+        return extractedDate;
+    }
+
+    public static String[] tokenizeString(String string) {
+        return string.toLowerCase().trim().split(REGEX_WHITESPACE);
     }
 
     public static String getLatestExtractedWord() {
@@ -66,13 +66,13 @@ public class DateIdentifier {
         ZonedDateTime matchingDate = null;
         LocalDate currentDate = LocalDate.now();
 
-        if (StringUtil.compareNoOrder(word, "today")) {
+        if (Util.compareNoOrder(word, "today")) {
             matchingDate = ZonedDateTime.of(
                     currentDate,
                     END_OF_DAY,
                     USER_ZONEID
             );
-        } else if (StringUtil.compareNoOrder(word, "tomorrow"))  {
+        } else if (Util.compareNoOrder(word, "tomorrow"))  {
             matchingDate = ZonedDateTime.of(
                     currentDate.plusDays(1),
                     END_OF_DAY,
@@ -81,10 +81,5 @@ public class DateIdentifier {
         }
 
         return matchingDate;
-    }
-
-    private static ArrayList<String> extractWordsWithTime(String[] words) {
-        ArrayList<String> wordsWithTime = new ArrayList<>();
-        return wordsWithTime;
     }
 }

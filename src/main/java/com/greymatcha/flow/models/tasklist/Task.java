@@ -4,7 +4,7 @@ public class Task {
 
     private String name;
     private String description;
-    private String uniqueID;
+    private final String uniqueID;
 
     public Task(String name, String description, String uniqueID) {
 

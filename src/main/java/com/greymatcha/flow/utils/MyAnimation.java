@@ -19,8 +19,8 @@ public class MyAnimation {
     public static void buttonHoverEffect(Node button, Rectangle background) {
 
         button.setCursor(Cursor.HAND);
-        button.setOnMouseEntered(_ -> background.setFill(Color.web(Theme.light)));
-        button.setOnMouseExited(_ -> background.setFill(Color.web(Theme.medium)));
+        button.setOnMouseEntered(_ -> background.setFill(Color.web(Theme.WHITE)));
+        button.setOnMouseExited(_ -> background.setFill(Color.web(Theme.LIGHT_GRAY)));
     }
 
     public static void buttonClickEffect(Node button, Pane parentPane) {

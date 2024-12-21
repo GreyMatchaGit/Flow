@@ -1,7 +1,7 @@
 package com.greymatcha.flow.fxmlcontrollers;
 
 import com.greymatcha.flow.utils.MyAnimation;
-import com.greymatcha.flow.utils.StringUtil;
+import com.greymatcha.flow.utils.Util;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,7 +40,7 @@ public class SideNavbarController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         username.setText("GreyMatcha");
-        userProfileImage.setImage(new Image(StringUtil.getImage("frieren.jpg")));
+        userProfileImage.setImage(new Image(Util.getImage("frieren.jpg")));
 
         MyAnimation.buttonHoverEffect(inboxButton, inboxBackground);
         MyAnimation.buttonHoverEffect(todayButton, todayBackground);

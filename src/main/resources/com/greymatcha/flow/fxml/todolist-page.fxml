@@ -31,7 +31,7 @@
                            <children>
                               <Text layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Todo List">
                                  <font>
-                                    <Font name="System Bold" size="30.0" />
+                                    <Font name="System Bold" size="32.0" />
                                  </font>
                               </Text>
                               <AnchorPane layoutX="141.0" layoutY="6.0">
@@ -79,7 +79,7 @@
                                  </color>
                               </DropShadow>
                            </effect></Rectangle>
-                        <TextFlow fx:id="taskNameTextFlow" layoutX="41.0" layoutY="47.0" prefHeight="32.0" prefWidth="410.0" />
+                        <TextFlow fx:id="taskNameTextFlow" layoutX="41.0" layoutY="52.0" prefHeight="32.0" prefWidth="410.0" />
                         <TextField fx:id="taskNameField" layoutX="41.0" layoutY="47.0" prefWidth="410.0" promptText="Task Name" style="-fx-background-color: transparent;">
                            <font>
                               <Font size="16.0" />

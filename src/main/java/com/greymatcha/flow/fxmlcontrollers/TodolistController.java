@@ -5,7 +5,7 @@ import com.greymatcha.flow.models.tasklist.Task;
 import com.greymatcha.flow.models.tasklist.TaskBuilder;
 import com.greymatcha.flow.models.tasklist.TaskList;
 import com.greymatcha.flow.utils.MyAnimation;
-import com.greymatcha.flow.utils.StringUtil;
+import com.greymatcha.flow.utils.Util;
 import com.greymatcha.flow.utils.Theme;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -19,15 +19,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-import org.w3c.dom.css.Rect;
 
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
@@ -71,9 +70,8 @@ public class TodolistController implements Initializable {
         taskList = TaskList.getInstance();
 
         Platform.runLater(() -> {
-            Font font = (new Font("System", 16));
-            taskNameField.setFont(font);
-            taskDescriptionField.setFont(font);
+            taskNameField.setFont(Theme.PARAGRAPH1);
+            taskDescriptionField.setFont(Theme.PARAGRAPH1);
         });
 
         setupUI();
@@ -112,17 +110,20 @@ public class TodolistController implements Initializable {
         taskPane.setScaleY(0);
         taskNameField.setBackground(null);
 
-        new Thread(() -> taskNameField.setOnKeyReleased(keyEvent -> {
-            String taskName = taskNameField.getText();
-            ZonedDateTime extractedDate = DateIdentifier.extractDate(taskName);
-            if (extractedDate != null) {
-                String wordWithDate = DateIdentifier.getLatestExtractedWord();
-                updateTaskNameTextFlow(wordWithDate, taskName);
-            } else resetTaskNameTextFlow();
-        })).start();
+        new Thread(() -> taskNameField.setOnKeyReleased(_ ->
+                highlightTextNameDate(taskNameField.getText())
+        )).start();
 
         taskDescriptionField.setBackground(null);
         taskPaneCloseButton.setCursor(Cursor.HAND);
+    }
+
+    private void highlightTextNameDate(String taskName) {
+        ZonedDateTime extractedDate = DateIdentifier.extractDate(taskName);
+        if (extractedDate != null) {
+            String wordWithDate = DateIdentifier.getLatestExtractedWord();
+            updateTaskNameTextFlow(wordWithDate, taskName);
+        } else resetTaskNameTextFlow();
     }
 
     private void updateTaskNameTextFlow(String highlightedPortion, String entireText) {
@@ -130,13 +131,9 @@ public class TodolistController implements Initializable {
         int start = entireText.toLowerCase().indexOf(highlightedPortion);
         int end = start + highlightedPortion.length();
 
-        Font font = (new Font("System", 16));
-
-        AnchorPane leftText = createTextPane(entireText.substring(0, start), font, false);
-
-        AnchorPane highlightedText = createTextPane(entireText.substring(start, end), font, true);
-
-        AnchorPane rightText = createTextPane(entireText.substring(end), font, false);
+        AnchorPane leftText = createHighlightPane(entireText.substring(0, start), Theme.PARAGRAPH1, false);
+        AnchorPane highlightedText = createHighlightPane(entireText.substring(start, end), Theme.PARAGRAPH1, true);
+        AnchorPane rightText = createHighlightPane(entireText.substring(end), Theme.PARAGRAPH1, false);
 
         resetTaskNameTextFlow();
         taskNameTextFlow.getChildren().addAll(leftText, highlightedText, rightText);
@@ -146,20 +143,19 @@ public class TodolistController implements Initializable {
         taskNameTextFlow.getChildren().clear();
     }
 
-    public AnchorPane createTextPane(String message, Font font, boolean isHighlighted) {
+    public AnchorPane createHighlightPane(String message, Font font, boolean isHighlighted) {
         Text text = new Text(message);
         text.setLayoutY(23);
         text.setLayoutX(5);
         text.setFont(font);
-        text.setFill(Color.web("#ffffff"));
+        text.setFill(Paint.valueOf("transparent"));
 
         AnchorPane background = new AnchorPane();
         background.getChildren().add(text);
+        background.setPadding(new Insets(-2, 0, -2, 0));
 
         if (isHighlighted) {
-            text.setFill(Color.web(Theme.SUNSET_ORANGE));
             background.setStyle("-fx-border-radius: 25; -fx-background-color: " + Theme.SUNSET_ORANGE + ";");
-
         }
 
         return background;
@@ -252,6 +248,7 @@ public class TodolistController implements Initializable {
 
         if (mode == Mode.ADD_TASK) {
             taskNameField.clear();
+            resetTaskNameTextFlow();
             taskDescriptionField.clear();
             taskPaneApplyButtonParent.setVisible(false);
             taskPaneRemoveButtonParent.setVisible(false);
@@ -270,6 +267,7 @@ public class TodolistController implements Initializable {
         taskPaneRemoveButtonParent.setVisible(true);
         taskPaneAddButtonParent.setVisible(false);
         taskNameField.setText(task.getName());
+        highlightTextNameDate(task.getName());
         taskDescriptionField.setText(task.getDescription());
         selectedTask = task;
     }
@@ -280,16 +278,16 @@ public class TodolistController implements Initializable {
         container.setPrefWidth(taskListVBox.getWidth());
 
             Rectangle lineBreaker = new Rectangle();
-            lineBreaker.setFill(Color.web(Theme.dark));
+            lineBreaker.setFill(Color.web(Theme.OBSIDIAN));
             lineBreaker.setHeight(container.getPrefHeight());
             lineBreaker.setWidth(container.getPrefWidth());
 
             Rectangle background = new Rectangle();
-            background.setFill(Color.web(Theme.light));
+            background.setFill(Color.web(Theme.WHITE));
             background.setHeight(container.getPrefHeight() - 1);
             background.setWidth(container.getPrefWidth());
 
-            ImageView checkIcon = new ImageView(new Image(StringUtil.getImage("check.png")));
+            ImageView checkIcon = new ImageView(new Image(Util.getImage("check.png")));
             checkIcon.setFitWidth(11);
             checkIcon.setFitHeight(11);
             checkIcon.setLayoutX(4);
@@ -300,7 +298,7 @@ public class TodolistController implements Initializable {
             checkBox.setCursor(Cursor.HAND);
             checkBox.setFill(Color.web("transparent"));
             checkBox.setStrokeWidth(1);
-            checkBox.setStroke(Color.web(Theme.dark));
+            checkBox.setStroke(Color.web(Theme.OBSIDIAN));
             checkBox.setLayoutX(10);
             checkBox.setLayoutY(12);
 
@@ -308,12 +306,12 @@ public class TodolistController implements Initializable {
             checkBox.setOnMouseExited(_ -> checkIcon.setOpacity(0));
 
             Text taskName = new Text(task.getName());
-            taskName.setFont(new Font(Theme.FONT_FAMILY, 18));
+            taskName.setFont(Theme.HEADER5);
             taskName.setLayoutX(28);
             taskName.setLayoutY(18);
 
             Text taskDescription = new Text(task.getDescription());
-            taskDescription.setFont(new Font(Theme.FONT_FAMILY, 12));
+            taskDescription.setFont(Theme.PARAGRAPH2);
             taskDescription.setLayoutX(28);
             taskDescription.setLayoutY(task.getDescription().isEmpty() ? 18 : 38);
 
