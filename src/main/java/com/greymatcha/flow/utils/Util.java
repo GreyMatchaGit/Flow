@@ -10,6 +10,7 @@ import java.util.Objects;
 public class Util {
 
     private static final String resourcePath =  "/com/greymatcha/flow/";
+    private static final String EMPTY_STRING = "";
 
     public static URL getFXML(String fileName) {
         return Main.class.getResource(resourcePath + "fxml/" + fileName + ".fxml");
@@ -27,6 +28,17 @@ public class Util {
         int string1Sum = sum(string1);
         int string2Sum = sum(string2);
         return string1Sum == string2Sum;
+    }
+
+    public static String toProperCase(Object object) {
+        if (object == null) return EMPTY_STRING;
+
+        String string = object.toString();
+
+        String firstLetter = string.substring(0, 1).toUpperCase();
+        String restOfTheString = string.substring(1).toLowerCase();
+
+        return firstLetter + restOfTheString;
     }
 
     public static int sum(String string) {

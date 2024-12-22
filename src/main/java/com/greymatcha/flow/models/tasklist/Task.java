@@ -1,10 +1,13 @@
 package com.greymatcha.flow.models.tasklist;
 
+import java.time.ZonedDateTime;
+
 public class Task {
 
     private String name;
     private String description;
     private final String uniqueID;
+    private ZonedDateTime deadline;
 
     public Task(String name, String description, String uniqueID) {
 
@@ -31,5 +34,13 @@ public class Task {
 
     public String getUniqueID() {
         return uniqueID;
+    }
+
+    public void setDeadline(ZonedDateTime deadline) {
+        this.deadline = deadline;
+    }
+
+    public ZonedDateTime getDeadline() {
+        return deadline;
     }
 }

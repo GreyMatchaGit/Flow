@@ -4,6 +4,7 @@ import com.greymatcha.flow.models.smartdate.DateIdentifier;
 import com.greymatcha.flow.models.tasklist.Task;
 import com.greymatcha.flow.models.tasklist.TaskBuilder;
 import com.greymatcha.flow.models.tasklist.TaskList;
+import com.greymatcha.flow.utils.Constant;
 import com.greymatcha.flow.utils.MyAnimation;
 import com.greymatcha.flow.utils.Util;
 import com.greymatcha.flow.utils.Theme;
@@ -32,6 +33,8 @@ import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
+import static com.greymatcha.flow.utils.Constant.*;
+
 public class TodolistController implements Initializable {
 
     @FXML
@@ -40,6 +43,8 @@ public class TodolistController implements Initializable {
     public ScrollPane taskListScrollPane;
     @FXML
     public VBox taskListVBox;
+    @FXML
+    public Text deadlineText;
     @FXML
     public TextField taskNameField, taskDescriptionField;
     @FXML
@@ -61,6 +66,7 @@ public class TodolistController implements Initializable {
     private Rectangle selectedLineBreaker;
     private Rectangle selectedBackground;
     private Button selectedEditTask;
+    private ZonedDateTime selectedTaskDeadline;
 
     private enum Mode {
         ADD_TASK,
@@ -112,20 +118,27 @@ public class TodolistController implements Initializable {
         taskPane.setScaleY(0);
         taskNameField.setBackground(null);
 
-        new Thread(() -> taskNameField.setOnKeyReleased(_ ->
-                highlightTextNameDate(taskNameField.getText())
-        )).start();
+        new Thread(() -> taskNameField.setOnKeyReleased(_ -> {
+            selectedTaskDeadline = highlightTextNameDate(taskNameField.getText());
+            displayDeadline(selectedTaskDeadline);
+        })).start();
 
         taskDescriptionField.setBackground(null);
         taskPaneCloseButton.setCursor(Cursor.HAND);
     }
 
-    private void highlightTextNameDate(String taskName) {
+    private ZonedDateTime highlightTextNameDate(String taskName) {
         ZonedDateTime extractedDate = DateIdentifier.extractDate(taskName);
-        if (extractedDate != null) {
-            String wordWithDate = DateIdentifier.getLatestExtractedWord();
-            updateTaskNameTextFlow(wordWithDate, taskName);
-        } else resetTaskNameTextFlow();
+
+        if (extractedDate == null) {
+            resetTaskNameTextFlow();
+            return null;
+        }
+
+        String wordWithDate = DateIdentifier.getLatestExtractedWord();
+        updateTaskNameTextFlow(wordWithDate, taskName);
+
+        return extractedDate;
     }
 
     private void updateTaskNameTextFlow(String highlightedPortion, String entireText) {
@@ -167,13 +180,14 @@ public class TodolistController implements Initializable {
         taskPaneAddButton.setCursor(Cursor.HAND);
         taskPaneAddButton.setOnMousePressed(event -> {
             MyAnimation.shrinkButtonSize(taskPaneAddButtonParent);
-            addNewTask();
+            Task newlyAddedTask = addNewTask();
+            newlyAddedTask.setDeadline(selectedTaskDeadline);
             closeTaskPane();
         });
         taskPaneAddButton.setOnMouseReleased(event -> MyAnimation.resetButtonSize(taskPaneAddButtonParent));
     }
 
-    private void addNewTask() {
+    private Task addNewTask() {
         String taskName = taskNameField.getText().isEmpty() ? "New Task" : taskNameField.getText();
         Task newTask = new TaskBuilder(UUID.randomUUID().toString())
                 .setName(taskName)
@@ -183,6 +197,8 @@ public class TodolistController implements Initializable {
         if (taskList.addTask(newTask)) {
             taskListVBox.getChildren().add(createTaskBox(newTask));
         }
+
+        return newTask;
     }
 
     private void setupRemoveButton() {
@@ -215,6 +231,7 @@ public class TodolistController implements Initializable {
         taskPaneApplyButton.setOnMousePressed(event -> {
             MyAnimation.shrinkButtonSize(taskPaneApplyButtonParent);
             updateSelectedTask();
+            selectedTask.setDeadline(selectedTaskDeadline);
             closeTaskPane();
         });
         taskPaneApplyButton.setOnMouseReleased(event -> MyAnimation.resetButtonSize(taskPaneApplyButtonParent));
@@ -254,6 +271,7 @@ public class TodolistController implements Initializable {
             taskNameField.clear();
             resetTaskNameTextFlow();
             taskDescriptionField.clear();
+            deadlineText.setText(EMPTY_STRING);
             taskPaneApplyButtonParent.setVisible(false);
             taskPaneRemoveButtonParent.setVisible(false);
             taskPaneAddButtonParent.setVisible(true);
@@ -272,8 +290,32 @@ public class TodolistController implements Initializable {
         taskPaneAddButtonParent.setVisible(false);
         taskNameField.setText(task.getName());
         highlightTextNameDate(task.getName());
+        displayDeadline(task.getDeadline());
         taskDescriptionField.setText(task.getDescription());
+
         selectedTask = task;
+    }
+
+    private void displayDeadline(ZonedDateTime deadline) {
+        deadlineText.setFont(Theme.PARAGRAPH1);
+        deadlineText.setFill(Color.web(Theme.OBSIDIAN));
+
+        if (deadline == null) {
+            deadlineText.setText(EMPTY_STRING);
+            return;
+        }
+
+        String deadlineMonth = Util.toProperCase(deadline.getMonth());
+        String deadlineWeek = Util.toProperCase(deadline.getDayOfWeek());
+
+        String deadlineFormat = String.format(
+                "%s %s %s\n%s",
+                deadlineMonth,
+                deadline.getDayOfMonth(),
+                deadline.getYear(),
+                deadlineWeek
+        );
+        deadlineText.setText(deadlineFormat);
     }
 
     private AnchorPane createTaskBox(Task task) {
