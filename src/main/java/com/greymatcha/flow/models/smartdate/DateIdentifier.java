@@ -11,8 +11,8 @@ import static java.time.DayOfWeek.*;
 public class DateIdentifier {
 
     private static HashSet<String> TIME_WORDS;
-
     private static String latestExtractedWord;
+    private static String latestModifiedString;
 
     public static void initialize() {
         setTimeWords();
@@ -36,14 +36,16 @@ public class DateIdentifier {
         String[] tokens = tokenizeString(string);
         ZonedDateTime extractedDate = null;
         String extractedWord = EMPTY_STRING;
+        StringBuilder builder = new StringBuilder(EMPTY_STRING);
 
         for (String token : tokens) {
-            String sortedToken = Util.sort(token);
+            String sortedToken = Util.sort(token.toLowerCase());
             if (TIME_WORDS.contains(sortedToken)) {
                 extractedDate = getMatchingDate(sortedToken);
                 extractedWord = token;
-                break;
+                continue;
             }
+            builder.append(token).append(" ");
         }
 
         if (extractedDate == null) return null;
@@ -53,15 +55,21 @@ public class DateIdentifier {
             latestExtractedWord = extractedWord;
         }
 
+        latestModifiedString = builder.toString().trim();
+
         return extractedDate;
     }
 
     public static String[] tokenizeString(String string) {
-        return string.toLowerCase().trim().split(REGEX_WHITESPACE_NONALNUM);
+        return string.trim().split(REGEX_WHITESPACE_NONALNUM);
     }
 
     public static String getLatestExtractedWord() {
         return latestExtractedWord;
+    }
+
+    public static String getLatestModifiedString() {
+        return latestModifiedString;
     }
 
     public static ZonedDateTime getMatchingDate(String word) {
@@ -78,7 +86,6 @@ public class DateIdentifier {
 
         return matchingDate;
     }
-
 
     public static int getDaysToAdd(String word) {
         if (Util.compareNoOrder(word, "today")) {

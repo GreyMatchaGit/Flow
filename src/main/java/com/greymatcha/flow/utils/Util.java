@@ -41,6 +41,24 @@ public class Util {
         return firstLetter + restOfTheString;
     }
 
+    public static String toCompactMonth(Object month) {
+        try {
+            StringBuilder monthBuilder = new StringBuilder(month.toString());
+            monthBuilder.delete(3, month.toString().length());
+            return toProperCase(monthBuilder.toString());
+        } catch (RuntimeException e) {
+            System.out.println("Util.toCompact() error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static boolean isBetween(int number, int start, int end, boolean isInclusive) {
+        if (isInclusive)
+            return number >= start && number <= end;
+
+        return number > start && number < end;
+    }
+
     public static int sum(String string) {
         int total = 0;
         for (int i = 0; i < string.length(); ++i)

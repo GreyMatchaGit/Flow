@@ -9,10 +9,11 @@ public class Task {
     private final String uniqueID;
     private ZonedDateTime deadline;
 
-    public Task(String name, String description, String uniqueID) {
+    public Task(String name, String description, ZonedDateTime deadline, String uniqueID) {
 
         this.name = name;
         this.description = description;
+        this.deadline = deadline;
         this.uniqueID = uniqueID;
     }
 

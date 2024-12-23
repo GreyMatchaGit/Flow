@@ -4,7 +4,6 @@ import com.greymatcha.flow.models.smartdate.DateIdentifier;
 import com.greymatcha.flow.models.tasklist.Task;
 import com.greymatcha.flow.models.tasklist.TaskBuilder;
 import com.greymatcha.flow.models.tasklist.TaskList;
-import com.greymatcha.flow.utils.Constant;
 import com.greymatcha.flow.utils.MyAnimation;
 import com.greymatcha.flow.utils.Util;
 import com.greymatcha.flow.utils.Theme;
@@ -34,6 +33,7 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 import static com.greymatcha.flow.utils.Constant.*;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class TodolistController implements Initializable {
 
@@ -46,7 +46,7 @@ public class TodolistController implements Initializable {
     @FXML
     public Text deadlineText;
     @FXML
-    public TextField taskNameField, taskDescriptionField;
+    public TextField taskNameField, taskDeadlineField;
     @FXML
     public TextFlow taskNameTextFlow;
     @FXML
@@ -59,8 +59,8 @@ public class TodolistController implements Initializable {
     private TaskList taskList;
     private Pane selectedRoot;
     private Task selectedTask;
-    private Text selectedTaskName;
-    private Text selectedTaskDescription;
+    private Text selectedTaskNameText;
+    private Text selectedTaskDeadlineText;
     private AnchorPane selectedContainer;
     private Circle selectedCheckBox;
     private Rectangle selectedLineBreaker;
@@ -79,7 +79,7 @@ public class TodolistController implements Initializable {
 
         Platform.runLater(() -> {
             taskNameField.setFont(Theme.PARAGRAPH1);
-            taskDescriptionField.setFont(Theme.PARAGRAPH1);
+            taskDeadlineField.setFont(Theme.PARAGRAPH1);
         });
 
         setupUI();
@@ -123,7 +123,7 @@ public class TodolistController implements Initializable {
             displayDeadline(selectedTaskDeadline);
         })).start();
 
-        taskDescriptionField.setBackground(null);
+        taskDeadlineField.setBackground(null);
         taskPaneCloseButton.setCursor(Cursor.HAND);
     }
 
@@ -191,7 +191,8 @@ public class TodolistController implements Initializable {
         String taskName = taskNameField.getText().isEmpty() ? "New Task" : taskNameField.getText();
         Task newTask = new TaskBuilder(UUID.randomUUID().toString())
                 .setName(taskName)
-                .setDescription(taskDescriptionField.getText())
+                .setDescription(taskDeadlineField.getText())
+                .setDeadline(selectedTaskDeadline)
                 .create();
 
         if (taskList.addTask(newTask)) {
@@ -222,8 +223,8 @@ public class TodolistController implements Initializable {
     private void clearSelectedTask() {
         selectedTask = null;
         selectedRoot = null;
-        selectedTaskName = null;
-        selectedTaskDescription = null;
+        selectedTaskNameText = null;
+        selectedTaskDeadlineText = null;
     }
 
     private void setupApplyButton() {
@@ -240,11 +241,15 @@ public class TodolistController implements Initializable {
     private void updateSelectedTask() {
         if (selectedTask != null) {
             selectedTask.setName(taskNameField.getText());
-            selectedTask.setDescription(taskDescriptionField.getText());
-            selectedTaskName.setText(taskNameField.getText());
-            selectedTaskDescription.setText(taskDescriptionField.getText());
-            selectedTaskDescription.setLayoutY(selectedTask.getDescription().isEmpty() ? 18 : 38);
-            selectedContainer.setPrefHeight(selectedTask.getDescription().isEmpty() ? 31 : 51);
+            selectedTask.setDescription(taskDeadlineField.getText());
+            selectedTaskNameText.setText(
+                DateIdentifier.getLatestModifiedString().isEmpty()
+                    ? "New Task"
+                    : DateIdentifier.getLatestModifiedString()
+            );
+            selectedTaskDeadlineText.setText(formatDeadline(selectedTaskDeadline));
+            selectedTaskDeadlineText.setLayoutY(selectedTaskDeadline == null ? 18 : 38);
+            selectedContainer.setPrefHeight(selectedTaskDeadline == null ? 31 : 51);
             selectedCheckBox.setLayoutY(12);
             selectedLineBreaker.setHeight(selectedRoot.getPrefHeight());
             selectedBackground.setHeight(selectedRoot.getPrefHeight() - 1);
@@ -270,7 +275,7 @@ public class TodolistController implements Initializable {
         if (mode == Mode.ADD_TASK) {
             taskNameField.clear();
             resetTaskNameTextFlow();
-            taskDescriptionField.clear();
+            taskDeadlineField.clear();
             deadlineText.setText(EMPTY_STRING);
             taskPaneApplyButtonParent.setVisible(false);
             taskPaneRemoveButtonParent.setVisible(false);
@@ -291,7 +296,7 @@ public class TodolistController implements Initializable {
         taskNameField.setText(task.getName());
         highlightTextNameDate(task.getName());
         displayDeadline(task.getDeadline());
-        taskDescriptionField.setText(task.getDescription());
+        taskDeadlineField.setText(task.getDescription());
 
         selectedTask = task;
     }
@@ -320,7 +325,7 @@ public class TodolistController implements Initializable {
 
     private AnchorPane createTaskBox(Task task) {
         AnchorPane container = new AnchorPane();
-        container.setPrefHeight(task.getDescription().isEmpty() ? 31 : 51);
+        container.setPrefHeight(task.getDeadline() == null ? 31 : 51);
         container.setPrefWidth(taskListVBox.getWidth());
 
             Rectangle lineBreaker = new Rectangle();
@@ -351,15 +356,25 @@ public class TodolistController implements Initializable {
             checkBox.setOnMouseEntered(_ -> checkIcon.setOpacity(0.50));
             checkBox.setOnMouseExited(_ -> checkIcon.setOpacity(0));
 
-            Text taskName = new Text(task.getName());
+            Text taskName = new Text(
+                DateIdentifier.getLatestModifiedString() == null || DateIdentifier.getLatestModifiedString().isEmpty()
+                        ? "New Task"
+                        : DateIdentifier.getLatestModifiedString()
+            );
             taskName.setFont(Theme.HEADER5);
             taskName.setLayoutX(28);
             taskName.setLayoutY(18);
 
-            Text taskDescription = new Text(task.getDescription());
-            taskDescription.setFont(Theme.PARAGRAPH2);
-            taskDescription.setLayoutX(28);
-            taskDescription.setLayoutY(task.getDescription().isEmpty() ? 18 : 38);
+            if (task.getDeadline() != null) System.out.println(task.getDeadline());
+
+            Text taskDeadline = new Text(
+                    task.getDeadline() != null
+                        ? formatDeadline(task.getDeadline())
+                        : EMPTY_STRING
+            );
+            taskDeadline.setFont(Theme.PARAGRAPH2);
+            taskDeadline.setLayoutX(28);
+            taskDeadline.setLayoutY(task.getDeadline() == null ? 18 : 38);
 
             Button editTask = new Button();
             editTask.setCursor(Cursor.HAND);
@@ -369,8 +384,8 @@ public class TodolistController implements Initializable {
 
             editTask.setOnMouseClicked(event -> {
                 selectedRoot = container;
-                selectedTaskName = taskName;
-                selectedTaskDescription = taskDescription;
+                selectedTaskNameText = taskName;
+                selectedTaskDeadlineText = taskDeadline;
                 selectedCheckBox = checkBox;
                 selectedContainer = container;
                 selectedLineBreaker = lineBreaker;
@@ -383,8 +398,8 @@ public class TodolistController implements Initializable {
 
             checkBox.setOnMouseClicked(_ -> {
                 selectedRoot = container;
-                selectedTaskName = taskName;
-                selectedTaskDescription = taskDescription;
+                selectedTaskNameText = taskName;
+                selectedTaskDeadlineText = taskDeadline;
                 selectedCheckBox = checkBox;
                 selectedContainer = container;
                 selectedLineBreaker = lineBreaker;
@@ -395,7 +410,29 @@ public class TodolistController implements Initializable {
                 removeSelectedTask();
             });
 
-        container.getChildren().addAll(lineBreaker, background, taskName, taskDescription, editTask, checkIcon, checkBox);
+        container.getChildren().addAll(lineBreaker, background, taskName, taskDeadline, editTask, checkIcon, checkBox);
         return container;
+    }
+
+    public String formatDeadline(ZonedDateTime deadline) {
+        int gapInDays = (int) (ZonedDateTime.now().until(deadline, DAYS));
+
+        if (gapInDays == 0) {
+            System.out.println(gapInDays);
+            return "Today";
+        }
+
+        if (gapInDays == 1)
+            return "Tomorrow";
+
+        if (gapInDays < 7)
+            return Util.toProperCase(deadline.getDayOfWeek());
+
+        return String.format(
+                "%s %s %s",
+                Util.toCompactMonth(deadline.getMonth()),
+                deadline.getDayOfMonth(),
+                deadline.getYear()
+        );
     }
 }

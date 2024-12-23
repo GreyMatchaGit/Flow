@@ -85,7 +85,7 @@
                            <font>
                               <Font size="16.0" />
                            </font></TextField>
-                        <TextField fx:id="taskDescriptionField" layoutX="41.0" layoutY="78.0" prefWidth="410.0" promptText="Task Description" style="-fx-background-color: transparent;">
+                        <TextField fx:id="taskDeadlineField" layoutX="41.0" layoutY="78.0" prefWidth="410.0" promptText="Task Description" style="-fx-background-color: transparent;">
                            <font>
                               <Font size="16.0" />
                            </font></TextField>
