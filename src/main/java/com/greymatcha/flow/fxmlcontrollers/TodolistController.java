@@ -62,6 +62,7 @@ public class TodolistController implements Initializable {
     private Text selectedTaskNameText;
     private Text selectedTaskDeadlineText;
     private AnchorPane selectedContainer;
+    private AnchorPane selectedTaskDeadlineBackground;
     private Circle selectedCheckBox;
     private Rectangle selectedLineBreaker;
     private Rectangle selectedBackground;
@@ -247,8 +248,12 @@ public class TodolistController implements Initializable {
                     ? "New Task"
                     : DateIdentifier.getLatestModifiedString()
             );
-            selectedTaskDeadlineText.setText(formatDeadline(selectedTaskDeadline));
-            selectedTaskDeadlineText.setLayoutY(selectedTaskDeadline == null ? 18 : 38);
+            selectedTaskDeadlineText.setText(
+                    selectedTaskDeadline != null
+                    ? " " + Util.formatDeadline(selectedTaskDeadline) + " "
+                    : EMPTY_STRING
+            );
+            selectedTaskDeadlineBackground.setLayoutY(selectedTaskDeadline == null ? 6 : 26);
             selectedContainer.setPrefHeight(selectedTaskDeadline == null ? 31 : 51);
             selectedCheckBox.setLayoutY(12);
             selectedLineBreaker.setHeight(selectedRoot.getPrefHeight());
@@ -367,14 +372,22 @@ public class TodolistController implements Initializable {
 
             if (task.getDeadline() != null) System.out.println(task.getDeadline());
 
-            Text taskDeadline = new Text(
+            AnchorPane taskDeadlineBackground = new AnchorPane();
+            taskDeadlineBackground.setStyle("-fx-background-radius: 4; -fx-background-color: " + Theme.MALACHITE + ";");
+            taskDeadlineBackground.setPrefHeight(16);
+
+                Text taskDeadline = new Text(
                     task.getDeadline() != null
-                        ? formatDeadline(task.getDeadline())
+                        ? " " + Util.formatDeadline(task.getDeadline()) + " "
                         : EMPTY_STRING
-            );
-            taskDeadline.setFont(Theme.PARAGRAPH2);
-            taskDeadline.setLayoutX(28);
-            taskDeadline.setLayoutY(task.getDeadline() == null ? 18 : 38);
+                );
+                taskDeadline.setFont(Theme.PARAGRAPH2);
+                taskDeadline.setLayoutY(12);
+
+            taskDeadlineBackground.setLayoutX(28);
+            taskDeadlineBackground.setLayoutY(task.getDeadline() == null ? 6: 26);
+
+            taskDeadlineBackground.getChildren().add(taskDeadline);
 
             Button editTask = new Button();
             editTask.setCursor(Cursor.HAND);
@@ -390,7 +403,9 @@ public class TodolistController implements Initializable {
                 selectedContainer = container;
                 selectedLineBreaker = lineBreaker;
                 selectedBackground = background;
+                selectedTaskDeadlineBackground = taskDeadlineBackground;
                 selectedEditTask = editTask;
+                selectedTask = task;
 
                 openTaskPane(Mode.EDIT_TASK, task);
                 System.out.println("Task UUID: " + task.getUniqueID());
@@ -404,35 +419,14 @@ public class TodolistController implements Initializable {
                 selectedContainer = container;
                 selectedLineBreaker = lineBreaker;
                 selectedBackground = background;
+                selectedTaskDeadlineBackground = taskDeadlineBackground;
                 selectedEditTask = editTask;
                 selectedTask = task;
 
                 removeSelectedTask();
             });
 
-        container.getChildren().addAll(lineBreaker, background, taskName, taskDeadline, editTask, checkIcon, checkBox);
+        container.getChildren().addAll(lineBreaker, background, taskName, taskDeadlineBackground, editTask, checkIcon, checkBox);
         return container;
-    }
-
-    public String formatDeadline(ZonedDateTime deadline) {
-        int gapInDays = (int) (ZonedDateTime.now().until(deadline, DAYS));
-
-        if (gapInDays == 0) {
-            System.out.println(gapInDays);
-            return "Today";
-        }
-
-        if (gapInDays == 1)
-            return "Tomorrow";
-
-        if (gapInDays < 7)
-            return Util.toProperCase(deadline.getDayOfWeek());
-
-        return String.format(
-                "%s %s %s",
-                Util.toCompactMonth(deadline.getMonth()),
-                deadline.getDayOfMonth(),
-                deadline.getYear()
-        );
     }
 }

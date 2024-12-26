@@ -4,8 +4,12 @@ import com.greymatcha.flow.Main;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Objects;
+
+import static com.greymatcha.flow.utils.Constant.EMPTY_STRING;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Util {
 
@@ -39,6 +43,30 @@ public class Util {
         String restOfTheString = string.substring(1).toLowerCase();
 
         return firstLetter + restOfTheString;
+    }
+
+    public static String formatDeadline(ZonedDateTime deadline) {
+
+        if (deadline == null) return EMPTY_STRING;
+        int gapInDays = (int) (ZonedDateTime.now().until(deadline, DAYS));
+
+        if (gapInDays == 0) {
+            System.out.println(gapInDays);
+            return "Today";
+        }
+
+        if (gapInDays == 1)
+            return "Tomorrow";
+
+        if (gapInDays < 7)
+            return Util.toProperCase(deadline.getDayOfWeek());
+
+        return String.format(
+                "%s %s %s",
+                Util.toCompactMonth(deadline.getMonth()),
+                deadline.getDayOfMonth(),
+                deadline.getYear()
+        );
     }
 
     public static String toCompactMonth(Object month) {
