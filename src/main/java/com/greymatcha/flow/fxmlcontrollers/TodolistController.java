@@ -324,6 +324,7 @@ public class TodolistController implements Initializable {
                 deadline.getYear(),
                 deadlineWeek
         );
+
         deadlineText.setText(deadlineFormat);
     }
 

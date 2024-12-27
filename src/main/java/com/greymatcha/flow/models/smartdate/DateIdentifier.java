@@ -211,27 +211,45 @@ public class DateIdentifier {
         String compactMonth = Util.toCompactMonth(tokenizedString[index]);
 
         assert compactMonth != null;
+
+        // Possible date is the String to be parsed into ZoneDateTime as the deadline.
         StringBuilder possibleDate = new StringBuilder(compactMonth);
         StringBuilder newLatestExtractedString = new StringBuilder(tokenizedString[index]);
 
-        if (index + 1 < tokenizedString.length && isValidDayMonth(tokenizedString[index + 1])) {
+        // If there is a next token, and it's a valid MonthDay,
+        if (index + 1 < tokenizedString.length && isValidMonthDay(tokenizedString[index + 1])) {
             String nextToken = tokenizedString[index + 1];
+            // append the next token to the possible date for parsing as the day
             possibleDate.append("-").append(nextToken);
+            // and append it to the newLatestExtractedString for highlighting.
             newLatestExtractedString.append(" ").append(nextToken);
 
+            // If the following token to the next token exists and is a valid number,
             if (index + 2 < tokenizedString.length && Util.isNumber(tokenizedString[index + 2])) {
                 String nextNextToken = tokenizedString[index + 2];
+                // append the following token to the possible for parsing as the year
                 possibleDate.append("-").append(nextNextToken);
+                // and append it to the newLatestExtractedString for highlighting.
                 newLatestExtractedString.append(" ").append(nextNextToken);
             } else {
+                // If there is no following token, it will default to the next
+                // Month + Day from the ZoneDateTime.now()
                 int yearToAppend = (dayToday.getMonth() == DECEMBER)
                     ? dayToday.getYear() + 1
                     : dayToday.getYear();
 
+                // and append the year for parsing.
                 possibleDate.append("-").append(yearToAppend);
             }
 
         } else {
+            // If only the Month is provided, then the deadline will
+            // default to the end of the Month provided.
+
+            // TODO: Fix this, it's currently broken. If the current month is December, it defaults to the
+            //  previous year. And when the MonthDay is provided, it defaults to the next year even when
+            //  the MonthDay is still in the future.
+
             int toMonth = yearMonth.getValue();
             int fromMonth = dayToday.getMonthValue();
 
@@ -239,7 +257,7 @@ public class DateIdentifier {
                 ? 1
                 : toMonth + 1;
 
-            int year = (fromMonth == 12 || toMonth < fromMonth)
+            int year = (toMonth < fromMonth)
                 ? dayToday.getYear() + 1
                 : dayToday.getYear();
 
@@ -277,7 +295,7 @@ public class DateIdentifier {
         return null;
     }
 
-    private static boolean isValidDayMonth(String string) {
+    private static boolean isValidMonthDay(String string) {
         try {
             int monthDay = Integer.parseInt(string);
             return monthDay >= 1 && monthDay <= 31;
