@@ -239,7 +239,7 @@ public class DateIdentifier {
                 ? 1
                 : toMonth + 1;
 
-            int year = (toMonth < fromMonth)
+            int year = (fromMonth == 12 || toMonth < fromMonth)
                 ? dayToday.getYear() + 1
                 : dayToday.getYear();
 
