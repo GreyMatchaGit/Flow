@@ -4,7 +4,7 @@ import com.greymatcha.flow.Main;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -14,7 +14,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class Util {
 
     private static final String resourcePath =  "/com/greymatcha/flow/";
-    private static final String EMPTY_STRING = "";
 
     public static URL getFXML(String fileName) {
         return Main.class.getResource(resourcePath + "fxml/" + fileName + ".fxml");
@@ -37,12 +36,25 @@ public class Util {
     public static String toProperCase(Object object) {
         if (object == null) return EMPTY_STRING;
 
+//        System.out.printf("Before processing: %s\n", object);
         String string = object.toString();
 
         String firstLetter = string.substring(0, 1).toUpperCase();
         String restOfTheString = string.substring(1).toLowerCase();
 
+//        System.out.printf("After processing: %s\n", firstLetter + restOfTheString);
+
         return firstLetter + restOfTheString;
+    }
+
+    public static boolean isNumber(String string) {
+        try {
+            Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.printf("[%s %s] Util.isNumber() exception: %s\n", LocalDate.now(), LocalTime.now(), e.getMessage());
+            return false;
+        }
     }
 
     public static String formatDeadline(ZonedDateTime deadline) {
@@ -72,10 +84,14 @@ public class Util {
     public static String toCompactMonth(Object month) {
         try {
             StringBuilder monthBuilder = new StringBuilder(month.toString());
+//            System.out.printf("Running %s through Util.toCompactMonth...\n", monthBuilder);
             monthBuilder.delete(3, month.toString().length());
+//            System.out.printf("Resulting compact: %s\n", monthBuilder);
+//            System.out.println("Now turning it into properCase.");
+
             return toProperCase(monthBuilder.toString());
         } catch (RuntimeException e) {
-            System.out.println("Util.toCompact() error: " + e.getMessage());
+//            System.out.println("Util.toCompact() error: " + e.getMessage());
             return null;
         }
     }
@@ -85,6 +101,25 @@ public class Util {
             return number >= start && number <= end;
 
         return number > start && number < end;
+    }
+
+    public static int parseMonthToInt(Month month) {
+        return switch (month) {
+            case JANUARY -> 1;
+            case FEBRUARY -> 2;
+            case MARCH -> 3;
+            case APRIL -> 4;
+            case MAY -> 5;
+            case JUNE -> 6;
+            case JULY -> 7;
+            case AUGUST -> 8;
+            case SEPTEMBER -> 9;
+            case OCTOBER -> 10;
+            case NOVEMBER -> 11;
+            case DECEMBER -> 12;
+            default -> throw new IllegalArgumentException("Invalid month: " + month);
+        };
+
     }
 
     public static int sum(String string) {

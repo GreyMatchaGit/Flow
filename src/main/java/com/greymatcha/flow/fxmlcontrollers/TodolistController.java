@@ -33,7 +33,6 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 import static com.greymatcha.flow.utils.Constant.*;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 public class TodolistController implements Initializable {
 
@@ -136,7 +135,7 @@ public class TodolistController implements Initializable {
             return null;
         }
 
-        String wordWithDate = DateIdentifier.getLatestExtractedWord();
+        String wordWithDate = DateIdentifier.getLatestExtractedString();
         updateTaskNameTextFlow(wordWithDate, taskName);
 
         return extractedDate;
