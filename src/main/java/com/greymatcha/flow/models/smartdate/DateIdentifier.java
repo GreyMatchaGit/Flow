@@ -56,6 +56,9 @@ public class DateIdentifier {
             builder.append(tokens[i]).append(" ");
         }
 
+
+        // TODO: Latest modified string doesn't take into account multiple words for
+        //       creating the deadline.
         latestModifiedString = builder.toString().trim();
 
         if (extractedDate == null) return null;
@@ -207,7 +210,7 @@ public class DateIdentifier {
     }
 
     public static ZonedDateTime getDate(String[] tokenizedString, int index, Month yearMonth) {
-        ZonedDateTime dayToday = ZonedDateTime.now();
+        ZonedDateTime dateTimeNow = ZonedDateTime.now();
         String compactMonth = Util.toCompactMonth(tokenizedString[index]);
 
         assert compactMonth != null;
@@ -234,9 +237,16 @@ public class DateIdentifier {
             } else {
                 // If there is no following token, it will default to the next
                 // Month + Day from the ZoneDateTime.now()
-                int yearToAppend = (dayToday.getMonth() == DECEMBER)
-                    ? dayToday.getYear() + 1
-                    : dayToday.getYear();
+
+                int currentMonth = dateTimeNow.getMonthValue();
+                int givenMonth = yearMonth.getValue();
+
+                int currentDayOfMonth = dateTimeNow.getDayOfMonth();
+                int givenDayOfMonth = Integer.parseInt(nextToken);
+
+                int yearToAppend = (currentMonth < givenMonth || (currentMonth == givenMonth && givenDayOfMonth < currentDayOfMonth))
+                   ? dateTimeNow.getYear() + 1
+                   : dateTimeNow.getYear();
 
                 // and append the year for parsing.
                 possibleDate.append("-").append(yearToAppend);
@@ -246,33 +256,26 @@ public class DateIdentifier {
             // If only the Month is provided, then the deadline will
             // default to the end of the Month provided.
 
-            // TODO: Fix this, it's currently broken. If the current month is December, it defaults to the
-            //  previous year. And when the MonthDay is provided, it defaults to the next year even when
-            //  the MonthDay is still in the future.
+            int nextMonth = yearMonth.getValue() + 1;
 
-            int toMonth = yearMonth.getValue();
-            int fromMonth = dayToday.getMonthValue();
+            int year;
 
-            int nextMonth = (toMonth + 1 > 12)
-                ? 1
-                : toMonth + 1;
+            if (nextMonth > 12) {
+                year = dateTimeNow.getYear() + 1;
+                nextMonth %= 12;
+            } else {
+                year = dateTimeNow.getYear();
+            }
 
-            int year = (toMonth < fromMonth)
-                ? dayToday.getYear() + 1
-                : dayToday.getYear();
-
-            ZonedDateTime nextDateTime = ZonedDateTime.of(
+            ZonedDateTime startOfNextMonth = ZonedDateTime.of(
                     year,
                     nextMonth,
                     1,
-                    0,
-                    0,
-                    0,
-                    0,
+                    0, 0, 0, 0,
                     USER_ZONEID
             );
 
-            return nextDateTime.plusDays(-1);
+            return startOfNextMonth.plusNanos(-1);
         }
 
         try {
