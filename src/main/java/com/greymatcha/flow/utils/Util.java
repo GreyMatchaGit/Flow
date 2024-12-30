@@ -62,15 +62,16 @@ public class Util {
         if (deadline == null) return EMPTY_STRING;
         int gapInDays = (int) (ZonedDateTime.now().until(deadline, DAYS));
 
-        if (gapInDays == 0) {
-            System.out.println(gapInDays);
+        if (gapInDays == -1)
+           return "Yesterday";
+
+        if (gapInDays == 0)
             return "Today";
-        }
 
         if (gapInDays == 1)
             return "Tomorrow";
 
-        if (gapInDays < 7)
+        if (gapInDays > 0 && gapInDays < 7)
             return Util.toProperCase(deadline.getDayOfWeek());
 
         return String.format(
