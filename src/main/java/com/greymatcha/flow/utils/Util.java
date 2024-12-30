@@ -81,13 +81,20 @@ public class Util {
         );
     }
 
+    public static String extractString(String string, String subString) {
+        int indexOfSubstring = string.indexOf(subString);
+
+        if (indexOfSubstring == -1)
+            return EMPTY_STRING;
+
+        return string.substring(0, indexOfSubstring) +
+               string.substring(indexOfSubstring + subString.length());
+    }
+
     public static String toCompactMonth(Object month) {
         try {
             StringBuilder monthBuilder = new StringBuilder(month.toString());
-//            System.out.printf("Running %s through Util.toCompactMonth...\n", monthBuilder);
             monthBuilder.delete(3, month.toString().length());
-//            System.out.printf("Resulting compact: %s\n", monthBuilder);
-//            System.out.println("Now turning it into properCase.");
 
             return toProperCase(monthBuilder.toString());
         } catch (RuntimeException e) {

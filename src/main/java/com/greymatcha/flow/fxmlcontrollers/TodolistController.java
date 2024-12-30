@@ -243,9 +243,9 @@ public class TodolistController implements Initializable {
             selectedTask.setName(taskNameField.getText());
             selectedTask.setDescription(taskDeadlineField.getText());
             selectedTaskNameText.setText(
-                DateIdentifier.getLatestModifiedString().isEmpty()
-                    ? "New Task"
-                    : DateIdentifier.getLatestModifiedString()
+                DateIdentifier.getLatestModifiedString() == null || DateIdentifier.getLatestModifiedString().isEmpty()
+                        ? "New Task"
+                        : Util.extractString(taskNameField.getText(), DateIdentifier.getLatestExtractedString()).trim()
             );
             selectedTaskDeadlineText.setText(
                     selectedTaskDeadline != null
@@ -361,11 +361,13 @@ public class TodolistController implements Initializable {
             checkBox.setOnMouseEntered(_ -> checkIcon.setOpacity(0.50));
             checkBox.setOnMouseExited(_ -> checkIcon.setOpacity(0));
 
+
             Text taskName = new Text(
                 DateIdentifier.getLatestModifiedString() == null || DateIdentifier.getLatestModifiedString().isEmpty()
                         ? "New Task"
-                        : DateIdentifier.getLatestModifiedString()
+                        : Util.extractString(taskNameField.getText(), DateIdentifier.getLatestExtractedString()).trim()
             );
+
             taskName.setFont(Theme.HEADER5);
             taskName.setLayoutX(28);
             taskName.setLayoutY(18);

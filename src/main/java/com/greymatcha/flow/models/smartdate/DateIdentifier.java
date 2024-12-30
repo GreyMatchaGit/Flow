@@ -56,13 +56,11 @@ public class DateIdentifier {
             builder.append(tokens[i]).append(" ");
         }
 
-
         // TODO: Latest modified string doesn't take into account multiple words for
         //       creating the deadline.
         latestModifiedString = builder.toString().trim();
 
         if (extractedDate == null) return null;
-
 
         if (!extractedWord.equals(latestExtractedString)) {
             System.out.println("Extracted date: " + extractedDate);
